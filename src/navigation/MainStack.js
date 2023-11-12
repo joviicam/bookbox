@@ -14,6 +14,7 @@ import ApplicationsScreen from "../screens/ApplicationsScreen";
 import BooksInLoanScreen from "../screens/BooksInLoanScreen";
 import PreferencesScreen from "../screens/PreferencesScreen";
 import ConfigurationScreen from "../screens/ConfigurationScreen";
+import Header from "../components/common/header";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
@@ -25,7 +26,11 @@ function MainStack() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="LoginS" component={LoginScreen} />
-        <Stack.Screen name="MainTabs" component={MainTabs} />
+        <Stack.Screen
+          name="MainTabs"
+          component={MainTabs}
+          options={{ headerShown: true, header: () => <Header /> }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

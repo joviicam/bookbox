@@ -4,9 +4,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Icon } from "react-native-elements";
 import LoginScreen from "../screens/LoginScreen";
-import MapStack from "./MapStack";
-import BooksStack from "./BooksStack";
-import IndexStack from "./IndexStack";
 import IndexScreen from "../screens/IndexScreen";
 import BooksScreen from "../screens/BooksScreen";
 import MapScreen from "../screens/MapScreen";
@@ -15,8 +12,13 @@ import UsersScreen from "../screens/UsersScreen";
 import LoansScreen from "../screens/LoansScreen";
 import ApplicationsScreen from "../screens/ApplicationsScreen";
 import BooksInLoanScreen from "../screens/BooksInLoanScreen";
+import PreferencesScreen from "../screens/PreferencesScreen";
+import ConfigurationScreen from "../screens/ConfigurationScreen";
+//import { createDrawerNavigator } from "@react-navigation/drawer";
+
 const Stack = createNativeStackNavigator();
 const Tabs = createBottomTabNavigator();
+//const Drawer = createDrawerNavigator();
 
 function MainStack() {
   return (
@@ -109,6 +111,8 @@ function MainTabs() {
           component={LoansScreen}
           options={{ title: "Prestamos" }}
         />
+        {/*         <Tabs.Screen name="MainDrawer" component={MyDrawer} />
+         */}
       </Tabs.Navigator>
     );
   }
@@ -135,5 +139,14 @@ function showIcons(route, color, size) {
     <Icon type="material-community" name={icono} color={color} size={size} />
   );
 }
+
+/* function MyDrawer() {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name="ConfigurationS" component={ConfigurationScreen} />
+      <Drawer.Screen name="PreferencesS" component={PreferencesScreen} />
+    </Drawer.Navigator>
+  );
+} */
 
 export default MainStack;

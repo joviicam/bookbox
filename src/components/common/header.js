@@ -1,31 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import colors from "../../utils/colors";
-import SideBar from "./sideBar";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Header() {
-  const [showSideBar, setShowSideBar] = useState(true);
+  const navigation = useNavigation();
 
-  const changeSideBar = () => {
-    setShowSideBar(!showSideBar);
+  const goToConfig = () => {
+    navigation.navigate("ConfigurationS");
   };
+
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={changeSideBar}>
-        <Icon
-          name="menu"
-          type="material-community"
-          color={colors.COLOR_PRIMARY}
-          size={40}
-          style={{
-            marginLeft: 5,
-            marginRight: 52,
-            alignSelf: "center",
-            marginTop: 25,
-          }}
-        />
-      </TouchableOpacity>
       <View style={styles.containerLogo}>
         <Image
           style={styles.image}
@@ -33,6 +20,15 @@ export default function Header() {
         />
         <Text style={styles.logoTitle}>Librería {"\n"}BookBox</Text>
       </View>
+      <TouchableOpacity onPress={goToConfig}>
+        <Icon
+          name="cog"
+          type="material-community"
+          color={colors.COLOR_PRIMARY}
+          size={40}
+          style={styles.icon}
+        />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -41,29 +37,29 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: "#77BA99",
     padding: 10,
-    alignItems: "center",
-    width: "100%",
-    paddingTop: 15,
     flexDirection: "row",
-    alignSelf: "center",
+    justifyContent: "space-between", // Align items horizontally
+    paddingTop: 30,
+    alignItems: "center",
   },
   containerLogo: {
     flexDirection: "row",
+    marginLeft: 90,
     alignItems: "center",
-    alignSelf: "center",
-    marginTop: 25,
   },
   logoTitle: {
     fontSize: 20,
     fontWeight: "bold",
     color: "white",
-    textAlign: "center",
-    alignSelf: "center",
     fontFamily: "Roboto",
     marginLeft: 10,
   },
   image: {
     width: 60,
     height: 60,
+  },
+  icon: {
+    marginTop: 10,
+    marginRight: 10,
   },
 });

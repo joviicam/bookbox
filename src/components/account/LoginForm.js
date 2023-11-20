@@ -25,7 +25,7 @@ export default function LoginForm() {
     onSubmit: async (formData) => {
       await AsyncStorage.setItem("email", formData.email);
       await AsyncStorage.setItem("password", formData.password);
-      navigation.navigate("MainTabs");
+      navigation.replace("MainTabs");
     },
   });
   return (

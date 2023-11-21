@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     marginTop: 150,
   },
   background: {
-    resizeMode: "cover", // Opciones: 'cover', 'contain', 'stretch', 'repeat', 'center'
+    resizeMode: "cover", 
     alignItems: "center",
   },
   image: {

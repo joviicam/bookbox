@@ -5,8 +5,6 @@ import colors from "../utils/colors";
 import Book from "../components/common/Book";
 import { useNavigation } from '@react-navigation/native';
 
-
-
 export default function BooksScreen() {
 
   const [filteredBooks, setFilteredBooks] = useState([]);
@@ -98,7 +96,7 @@ export default function BooksScreen() {
         <Button
           buttonStyle={styles.btnAdd}
           onPress={() => navigation.navigate('AddBookS')}
-          icon={<Icon type="material-community" name="plus" size={30} />}
+          icon={<Icon type="material-community" name="plus" size={30} color={"white"} />}
         />
         
       </View>

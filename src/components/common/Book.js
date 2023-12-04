@@ -13,7 +13,6 @@ export default function Book(props) {
 
   const toggleLoanModal = () => {
     if (isLoanConfirmed) {
-      // If the loan is confirmed, we don't want to show the modal again
       Toast.show({
         type: "error",
         text1: "Error",
@@ -29,7 +28,6 @@ export default function Book(props) {
   };
 
   const handleLoanConfirm = () => {
-    // Add your logic for handling the loan confirmation here
     console.log("Loan confirmed");
     setLoanConfirmed(true);
     toggleLoanModal();
@@ -57,6 +55,7 @@ export default function Book(props) {
           size={30}
           color="white"
           name={isLoanConfirmed ? "hand-back-left" : "hand-back-left-outline"}
+
         />
       </TouchableOpacity>
 

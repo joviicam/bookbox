@@ -15,6 +15,7 @@ import BooksInLoanScreen from "../screens/BooksInLoanScreen";
 import PreferencesScreen from "../screens/PreferencesScreen";
 import ConfigurationScreen from "../screens/ConfigurationScreen";
 import Header from "../components/common/Header";
+import AddBook from "../components/books/AddBook";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
@@ -39,6 +40,11 @@ function MainStack() {
         <Stack.Screen
           name="PreferencesS"
           component={PreferencesScreen}
+          options={{ headerShown: true, header: () => <Header /> }}
+        />
+        <Stack.Screen
+          name="AddBookS"
+          component={AddBook}
           options={{ headerShown: true, header: () => <Header /> }}
         />
       </Stack.Navigator>
@@ -67,7 +73,6 @@ function MainTabs() {
     getPasswordData();
   }, []);
 
-  console.log("emailChido: " + email, "password: " + password);
 
   if (email === "joviicam9@gmail.com" && password === "123456") {
     return (

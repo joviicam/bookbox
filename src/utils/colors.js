@@ -8,4 +8,5 @@ export default {
   COLOR_PRIMARY_DARK: colorPrimaryDark,
   COLOR_ACCENT: colorAccent,
   GREEN: green,
+  BLUE: "#2F4858",
 };

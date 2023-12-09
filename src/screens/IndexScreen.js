@@ -87,11 +87,20 @@ export default function IndexScreen() {
       <View style={styles.SearchInput}>
         <Input
           rightIcon={
-            <Icon type="material-community" name="magnify" size={30} color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)} />
+            <Icon
+              type="material-community"
+              name="magnify"
+              size={30}
+              color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+            />
           }
           placeholder="Buscar"
-          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
-          style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}}
+          placeholderTextColor={colors.getContrastColor(
+            colors.COLOR_FORM_BACKGROUND
+          )}
+          style={{
+            color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+          }}
           onChangeText={(text) => searchFilterFunction(text)}
         ></Input>
       </View>
@@ -121,8 +130,6 @@ const styles = StyleSheet.create({
     fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
     color: colors.getContrastColor(colors.COLOR_SECONDARY),
-    fontFamily: "Roboto",
-    marginTop: 5,
   },
   SearchInput: {
     padding: 5,

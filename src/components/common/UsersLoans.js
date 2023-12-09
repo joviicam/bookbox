@@ -2,15 +2,15 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import colors from "../../utils/colors";
 
-export default function LoansHistory(props) {
-  const { nombre, autor, email, days } = props;
+export default function UsersLoans(props) {
+  const { nombre, autor, gender, days } = props;
 
   return (
     <View style={styles.btn}>
       <View style={styles.containerTitle}>
         <Text style={styles.nameStyle}>{nombre}</Text>
         <Text style={styles.autorStyle}>{autor}</Text>
-        <Text style={styles.emailStyle}>{email}</Text>
+        <Text style={styles.emailStyle}>{gender}</Text>
       </View>
       <View style={styles.containerTitle}>
         <Text style={styles.back}>Dias para devolverlo</Text>

@@ -98,6 +98,7 @@ export default function ApplicationsScreen() {
           placeholderTextColor={colors.getContrastColor(
             colors.COLOR_FORM_BACKGROUND
           )}
+          style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
           onChangeText={(text) => searchFilterFunction(text)}
         />
       </View>

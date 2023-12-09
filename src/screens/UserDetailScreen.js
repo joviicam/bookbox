@@ -55,13 +55,6 @@ export default function UserDetailScreen() {
         style={styles.background}
       >
         <View style={styles.containerLogo}>
-          <Image
-            style={styles.image}
-            source={require("../../assets/images/logo.png")}
-          />
-          <Text style={styles.logoTitle}>Librería {"\n"}BookBox</Text>
-        </View>
-        <View style={styles.containerLogo}>
           <View style={styles.formContainer}>
             <Text style={styles.header}>
               {user.id ? "Editar datos" : "Agregar usuario"}
@@ -146,7 +139,7 @@ const styles = StyleSheet.create({
   containerLogo: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 150,
+    marginTop: 100,
   },
   background: {
     resizeMode: "cover",
@@ -163,7 +156,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Roboto",
     marginBottom: 20,
   },
   logoTitle: {
@@ -172,7 +164,6 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Roboto",
   },
   formContainer: {
     flex: 1,
@@ -195,11 +186,12 @@ const styles = StyleSheet.create({
     width: "80%",
     height: 60,
     borderRadius: 30,
+    alignSelf: "center",
     backgroundColor: colors.COLOR_PRIMARY,
   },
   buttonsContainer: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "center",
     width: "100%",
   },
 });

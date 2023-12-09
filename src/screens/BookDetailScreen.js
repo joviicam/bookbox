@@ -2,21 +2,18 @@ import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
 import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Button, Input } from "react-native-elements";
+import colors from "../utils/colors";
 import { Picker } from "@react-native-picker/picker";
-import colors from "../../utils/colors";
 
-export default function AddBook() {
+export default function BookDetailScreen() {
   const route = useRoute();
-  const libro = {
-    gender: "",
-    nombre: "",
-    autor: "",
-  };
+  const { libro } = route.params ? route.params : {};
   const [gender, setGender] = useState(libro.gender ? libro.gender : "");
   const [nombre, setNombre] = useState(libro.nombre ? libro.nombre : "");
   const [autor, setAutor] = useState(libro.autor ? libro.autor : "");
 
   const mapLibro = () => {
+    libro.id = libro.id ? libro.id : undefined;
     libro.nombre = libro.nombre ? libro.nombre : "";
     libro.autor = libro.autor ? libro.autor : "";
     libro.gender = libro.gender ? libro.gender : "";
@@ -46,12 +43,14 @@ export default function AddBook() {
   return (
     <View>
       <ImageBackground
-        source={require("../../../assets/images/libreria.jpg")}
+        source={require("../../assets/images/libreria.jpg")}
         style={styles.background}
       >
         <View style={styles.containerLogo}>
           <View style={styles.formContainer}>
-            <Text style={styles.header}>Agregar libro</Text>
+            <Text style={styles.header}>
+              {libro.id ? "Editar datos" : "Agregar libro"}
+            </Text>
             <Input
               value={nombre}
               onChangeText={handleNombreChange}

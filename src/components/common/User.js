@@ -1,25 +1,25 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import colors from "../../utils/colors";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
 export default function User(props) {
-  const { user: { fullName, email } } = props;
+  const {
+    user: { fullName, email },
+  } = props;
   const { user } = props;
 
   const navigation = useNavigation();
 
   const goToUserDetails = () => {
     navigation.navigate("UserDetailsS", { user: user });
-  }
+  };
 
   return (
     <TouchableOpacity onPress={goToUserDetails}>
       <View style={styles.btn}>
         <View style={styles.containerTitle}>
-          <Text style={styles.nameStyle}>
-            {fullName}
-          </Text>
+          <Text style={styles.nameStyle}>{fullName}</Text>
           <Text style={styles.email}>{email}</Text>
         </View>
       </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     margin: 5,
     backgroundColor: colors.COLOR_PRIMARY,
     borderRadius: 10,
-    width: 250,
+    width: 300,
     height: 80,
   },
   containerTitle: {

@@ -53,10 +53,11 @@ const styles = StyleSheet.create({
   containerLogo: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 150,
+    marginTop: 220,
   },
   background: {
-    resizeMode: "cover", 
+    flex: 1,
+    resizeMode: "cover",
     alignItems: "center",
   },
   image: {
@@ -69,10 +70,9 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     alignSelf: "center",
-    fontFamily: "Roboto",
   },
   containerForm: {
-    marginTop: 90,
+    marginTop: 60,
     height: 400,
     width: "80%",
     backgroundColor: colors.COLOR_FORM_BACKGROUND,
@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: colors.FONT_SIZE_NORMAL,
     marginTop: 10,
-    fontFamily: "Roboto",
-    marginBottom: 45,
+    marginBottom: 80,
   },
 });

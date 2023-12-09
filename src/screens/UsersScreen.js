@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 
 import { Input, Icon, Button } from "react-native-elements";
 import colors from "../utils/colors";
-
+import { useNavigation } from "@react-navigation/native";
 import User from "../components/common/User";
 import { useEffect, useState } from "react";
 
 export default function UsersScreen() {
   const [filteredUsers, setFilteredUsers] = useState([]);
-
+  const navigation = useNavigation();
   let [users, setUsers] = useState([]);
 
   useEffect(() => {
@@ -22,9 +22,9 @@ export default function UsersScreen() {
         idRol: {
           id: "1",
           name: "administrador",
-          description: "Un rol mas"
+          description: "Un rol mas",
         },
-        roleName: "administrador"
+        roleName: "administrador",
       },
       {
         id: "2",
@@ -34,9 +34,9 @@ export default function UsersScreen() {
         idRol: {
           id: "1",
           name: "administrador",
-          description: "Un rol mas"
+          description: "Un rol mas",
         },
-        roleName: "administrador"
+        roleName: "administrador",
       },
       {
         id: "3",
@@ -46,9 +46,9 @@ export default function UsersScreen() {
         idRol: {
           id: "1",
           name: "administrador",
-          description: "Un rol mas"
+          description: "Un rol mas",
         },
-        roleName: "administrador"
+        roleName: "administrador",
       },
       {
         id: "4",
@@ -58,9 +58,9 @@ export default function UsersScreen() {
         idRol: {
           id: "1",
           name: "administrador",
-          description: "Un rol mas"
+          description: "Un rol mas",
         },
-        roleName: "administrador"
+        roleName: "administrador",
       },
       {
         id: "5",
@@ -70,9 +70,9 @@ export default function UsersScreen() {
         idRol: {
           id: "1",
           name: "administrador",
-          description: "Un rol mas"
+          description: "Un rol mas",
         },
-        roleName: "administrador"
+        roleName: "administrador",
       },
     ];
     setUsers(usersArray);
@@ -84,12 +84,11 @@ export default function UsersScreen() {
 
   const searchFilterFunction = (text) => {
     if (text) {
+      const textData = text.toLowerCase();
       const newData = users.filter((item) => {
-        const itemData = item.nombre
-          ? item.nombre.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1;
+        const fullName = item.fullName ? item.fullName.toLowerCase() : "";
+        const email = item.email ? item.email.toLowerCase() : "";
+        return fullName.includes(textData) || email.includes(textData);
       });
       setFilteredUsers(newData);
     } else {
@@ -103,7 +102,12 @@ export default function UsersScreen() {
       <View style={styles.SearchInput}>
         <Input
           rightIcon={
-            <Icon type="material-community" name="magnify" size={30} color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)} />
+            <Icon
+              type="material-community"
+              name="magnify"
+              size={30}
+              color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+            />
           }
           placeholder="Buscar"
           onChangeText={(text) => searchFilterFunction(text)}
@@ -114,9 +118,21 @@ export default function UsersScreen() {
             color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
           }}
         ></Input>
+        <Button
+          buttonStyle={styles.btnAdd}
+          onPress={() => navigation.navigate("UserDetailsS")}
+          icon={
+            <Icon
+              type="material-community"
+              name="plus"
+              size={30}
+              color={colors.getContrastColor(colors.COLOR_PRIMARY)}
+            />
+          }
+        />
       </View>
       <ScrollView>
-        <View style={styles.userContainer}>
+        <View>
           {filteredUsers.map((user) => {
             return <User key={user.id} user={user} />;
           })}
@@ -137,16 +153,24 @@ const styles = StyleSheet.create({
     fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
     color: colors.getContrastColor(colors.COLOR_SECONDARY),
-    fontFamily: "Roboto",
   },
   SearchInput: {
+    marginLeft: -50,
     padding: 5,
-    width: 300,
+    width: 250,
     height: 60,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderRadius: 15,
     backgroundColor: colors.COLOR_FORM_BACKGROUND,
     marginBottom: 20,
     marginTop: 10,
     flexDirection: "row",
+  },
+  btnAdd: {
+    marginLeft: 15,
+    backgroundColor: colors.COLOR_PRIMARY,
+    borderRadius: 15,
+    marginTop: 5,
+    padding: 5,
   },
 });

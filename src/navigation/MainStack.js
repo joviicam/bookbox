@@ -18,6 +18,8 @@ import Header from "../components/common/Header";
 import AddBook from "../components/books/AddBook";
 import UserDetailScreen from "../screens/UserDetailScreen";
 import colors from "../utils/colors";
+import BookDetailScreen from "../screens/BookDetailScreen";
+import HeaderForConfig from "../components/common/HeaderForConfig";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
@@ -37,7 +39,7 @@ function MainStack() {
         <Stack.Screen
           name="ConfigurationS"
           component={ConfigurationScreen}
-          options={{ headerShown: true, header: () => <Header /> }}
+          options={{ headerShown: true, header: () => <HeaderForConfig /> }}
         />
         <Stack.Screen
           name="PreferencesS"
@@ -52,7 +54,12 @@ function MainStack() {
         <Stack.Screen
           name="UserDetailsS"
           component={UserDetailScreen}
-          options={{ headerShown: false }}
+          options={{ headerShown: true, header: () => <Header /> }}
+        />
+        <Stack.Screen
+          name="BookDetailS"
+          component={BookDetailScreen}
+          options={{ headerShown: true, header: () => <Header /> }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -80,12 +87,13 @@ function MainTabs() {
     getPasswordData();
   }, []);
 
-
   if (email === "joviicam9@gmail.com" && password === "123456") {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({
-          tabBarActiveTintColor: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+          tabBarActiveTintColor: colors.getContrastColor(
+            colors.COLOR_FORM_BACKGROUND
+          ),
           tabBarInactiveTintColor: "gray",
           tabBarIcon: ({ color, size }) => showIcons(route, color, size),
           headerShown: false,
@@ -115,7 +123,9 @@ function MainTabs() {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({
-          tabBarActiveTintColor: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+          tabBarActiveTintColor: colors.getContrastColor(
+            colors.COLOR_FORM_BACKGROUND
+          ),
           tabBarInactiveTintColor: "gray",
           tabBarIcon: ({ color, size }) => showIcons(route, color, size),
           headerShown: false,

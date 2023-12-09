@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LogoutButton from "../components/common/LogoutButton";
 import ChangePasswordModal from "../components/account/ChangePasswordModal"; // Import the modal component
 import { useNavigation } from "@react-navigation/native";
+import colors from "../utils/colors";
 
 export default function ConfigurationScreen() {
   const navigation = useNavigation();
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
   },
   optionContainer: {
     borderBottomWidth: 1,
@@ -59,8 +61,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   option: {
-    fontSize: 18,
+    fontSize: colors.FONT_SIZE_NORMAL,
     marginBottom: 10,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
   },
   logout: {
     flex: 1,

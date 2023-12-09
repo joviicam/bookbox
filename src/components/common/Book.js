@@ -53,7 +53,7 @@ export default function Book(props) {
         <Icon
           type="material-community"
           size={30}
-          color="white"
+          color={colors.getContrastColor(colors.COLOR_PRIMARY)}
           name={isLoanConfirmed ? "hand-back-left" : "hand-back-left-outline"}
 
         />
@@ -84,21 +84,22 @@ const styles = StyleSheet.create({
   },
   containerTitle: {
     flexDirection: "column",
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
   },
   nameStyle: {
-    fontSize: 14,
+    fontSize: colors.FONT_SIZE_NORMAL,
     fontWeight: "bold",
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
     marginBottom: 5,
   },
   autorStyle: {
-    fontSize: 12,
-    color: "white",
+    fontSize: colors.FONT_SIZE_SMALL,
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
     marginBottom: 5,
   },
   genderStyle: {
-    fontSize: 10,
+    fontSize: colors.FONT_SIZE_INFO,
     fontWeight: "bold",
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
   },
 });

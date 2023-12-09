@@ -88,20 +88,21 @@ export default function BooksScreen() {
       <View style={styles.SearchInput}>
         <Input
           rightIcon={
-            <Icon type="material-community" name="magnify" size={30} />
+            <Icon type="material-community" name="magnify" size={30} color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)} />
           }
           placeholder="Buscar"
+          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
           onChangeText={(text) => searchFilterFunction(text)}
         ></Input>
         <Button
           buttonStyle={styles.btnAdd}
           onPress={() => navigation.navigate('AddBookS')}
-          icon={<Icon type="material-community" name="plus" size={30} color={"white"} />}
+          icon={<Icon type="material-community" name="plus" size={30} color={colors.getContrastColor(colors.COLOR_PRIMARY)} />}
         />
         
       </View>
       <ScrollView>
-          <View style={styles.booksContainer}>
+          <View>
           {filteredBooks.map((book) => {
             return (
               <Book
@@ -120,32 +121,31 @@ export default function BooksScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.GREEN,
+    backgroundColor: colors.COLOR_SECONDARY,
     alignItems: "center",
     justifyContent: "center"
   },
   title:{
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_SECONDARY),
     fontFamily: "Roboto",
   },
   SearchInput: {
     padding: 5,
     width: 200,
     height: 60,
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderRadius: 15,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     marginBottom: 20,
     marginTop: 10,
     flexDirection: "row",
   },
   btnAdd:{
     marginLeft: 20,
-    backgroundColor: colors.BLUE,
+    backgroundColor: colors.COLOR_PRIMARY,
     borderRadius: 15,
-    color: "white",
     padding: 5,
   },
 });

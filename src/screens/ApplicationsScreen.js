@@ -83,14 +83,15 @@ export default function ApplicationsScreen() {
       <View style={styles.SearchInput}>
         <Input
           rightIcon={
-            <Icon type="material-community" name="magnify" size={30} />
+            <Icon type="material-community" name="magnify" size={30} color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)} />
           }
           placeholder="Buscar"
+          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
           onChangeText={(text) => searchFilterFunction(text)}
         />
       </View>
       <ScrollView>
-        <View style={styles.loansContainer}>
+        <View>
           {filteredLoans.map((loan) => (
             <Loans
               key={loan.key}
@@ -107,24 +108,24 @@ export default function ApplicationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.GREEN,
+    backgroundColor: colors.COLOR_SECONDARY,
     alignItems: "center",
     justifyContent: "center"
   },
   title: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 40,
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_SECONDARY),
   },
   SearchInput: {
     padding: 5,
     width: 300,
     height: 60,
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderRadius: 15,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     marginBottom: 20,
     marginTop: 10,
     flexDirection: "row"

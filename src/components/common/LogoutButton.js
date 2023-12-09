@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
+import colors from "../../utils/colors";
 
 export default function LogoutButton(props) {
   const { onPress } = props;
@@ -20,11 +21,11 @@ const styles = StyleSheet.create({
     width: 300,
     height: 50,
     borderRadius: 15,
-    backgroundColor: "#FF5858",
+    backgroundColor: colors.COLOR_WARNING,
   },
   buttonTitle: {
-    color: "#FFFFFF",
+    color: colors.getContrastColor(colors.COLOR_WARNING),
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
   },
 });

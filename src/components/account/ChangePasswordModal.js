@@ -58,6 +58,7 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword }) => {
         <TextInput
           style={styles.input}
           placeholder="Contraseña actual"
+          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
           secureTextEntry
           value={currentPassword}
           onChangeText={(text) => setCurrentPassword(text)}
@@ -66,6 +67,7 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword }) => {
         <TextInput
           style={styles.input}
           placeholder="Nueva Contraseña"
+          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
           secureTextEntry
           value={newPassword}
           onChangeText={(text) => setNewPassword(text)}
@@ -74,6 +76,7 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword }) => {
         <TextInput
           style={styles.input}
           placeholder="Confirmar Nueva Contraseña"
+          placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
           secureTextEntry
           value={confirmNewPassword}
           onChangeText={(text) => setConfirmNewPassword(text)}
@@ -81,11 +84,11 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword }) => {
         {error !== "" && <Text style={styles.errorText}>{error}</Text>}
 
         <TouchableOpacity style={styles.confirmButton} onPress={handleConfirm}>
-          <Text style={styles.buttonText}>Confirmar</Text>
+          <Text style={styles.buttonTextConfirm}>Confirmar</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-          <Text style={styles.buttonText}>Cancelar</Text>
+          <Text style={styles.buttonTextCancel}>Cancelar</Text>
         </TouchableOpacity>
       </View>
     </Modal>
@@ -94,12 +97,13 @@ const ChangePasswordModal = ({ isVisible, onClose, onChangePassword }) => {
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     padding: 20,
     borderRadius: 15,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     fontWeight: "bold",
     marginBottom: 10,
     alignSelf: "center",
@@ -108,6 +112,7 @@ const styles = StyleSheet.create({
   input: {
     height: 40,
     borderColor: "gray",
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
@@ -121,18 +126,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   cancelButton: {
-    backgroundColor: "#FF5858",
+    backgroundColor: colors.COLOR_WARNING,
     padding: 10,
     borderRadius: 15,
     alignItems: "center",
   },
-  buttonText: {
-    color: "white",
+  buttonTextConfirm: {
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
+    fontWeight: "bold",
+  },
+  buttonTextCancel: {
+    color: colors.getContrastColor(colors.COLOR_WARNING),
     fontWeight: "bold",
   },
   errorText: {
-    color: "red",
+    color: colors.COLOR_WARNING,
     marginBottom: 10,
+    fontSize: colors.FONT_SIZE_INFO,
   },
 });
 

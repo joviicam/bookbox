@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import colors from "../utils/colors";
 
 export default function BooksInLoanScreen() {
   return (
@@ -11,9 +12,11 @@ export default function BooksInLoanScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
   },
   title: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     fontWeight: "bold",
     textAlign: "center",
     marginTop: 40,

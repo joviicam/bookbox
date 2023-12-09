@@ -10,6 +10,7 @@ import {
 import LoginForm from "../components/account/LoginForm";
 import RegisterForm from "../components/account/RegisterForm";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import colors from "../utils/colors";
 
 export default function LoginScreen() {
   const [showLoginForm, setShowLoginForm] = useState(true);
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     height: 70,
   },
   logoTitle: {
-    fontSize: 25,
+    fontSize: colors.FONT_SIZE_LARGE,
     fontWeight: "bold",
     color: "white",
     textAlign: "center",
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 90,
     height: 400,
     width: "80%",
-    backgroundColor: "white",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderBottomLeftRadius: 30,
@@ -85,7 +86,7 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 15,
+    fontSize: colors.FONT_SIZE_NORMAL,
     marginTop: 10,
     fontFamily: "Roboto",
     marginBottom: 45,

@@ -35,7 +35,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#77BA99",
+    backgroundColor: colors.COLOR_SECONDARY,
     padding: 10,
     flexDirection: "row",
     justifyContent: "space-between", // Align items horizontally
@@ -43,14 +43,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerLogo: {
+    backgroundColor: colors.COLOR_SECONDARY,
     flexDirection: "row",
     marginLeft: 90,
     alignItems: "center",
   },
   logoTitle: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_SECONDARY),
     fontFamily: "Roboto",
     marginLeft: 10,
   },

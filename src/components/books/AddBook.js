@@ -33,28 +33,29 @@ export default function AddBook() {
                 <Input
                 style={styles.input}
                 placeholder="Titulo"
-                placeholderTextColor={colors.PRIMARY_COLOR}
+                placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
                 />
                 <Text style={styles.text}>Autor</Text>
                 <Input
                 style={styles.input}
                 placeholder="Autor"
-                placeholderTextColor={colors.PRIMARY_COLOR}
+                placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
                 />
                 <Text style={styles.text}>Género</Text> 
                 <Input
                 style={styles.input}
                 placeholder="Género"
-                placeholderTextColor={colors.PRIMARY_COLOR}
+                placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
                 />
                 <Text style={styles.text}>Descripción</Text>
                 <Input
                 style={styles.input}
                 placeholder="Descripción"
-                placeholderTextColor={colors.PRIMARY_COLOR}
+                placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
                 />
                 <Button
                   title={"Añadir libro"}
+                  titleStyle={{color: colors.getContrastColor(colors.COLOR_PRIMARY)}}
                   buttonStyle={styles.btnAddBook}
                 />
             </View>
@@ -68,10 +69,11 @@ const styles = StyleSheet.create({
 
       text:{
         fontWeight: "bold",
-        color: colors.PRIMARY_COLOR,
+        color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
         textAlign: "left",
         alignSelf: "flex-start",
         fontFamily: "Roboto",
+        fontSize: colors.FONT_SIZE_SMALL,
       },
       background: {
         resizeMode: "cover", 
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
         height: 800
       },
       logoTitle: {
-        fontSize: 30,
+        fontSize: colors.FONT_SIZE_LARGE,
         fontWeight: "bold",
         color: "white",
         textAlign: "center",
@@ -90,7 +92,7 @@ const styles = StyleSheet.create({
       containerForm: {
         height: 500,
         width: "80%",
-        backgroundColor: "white",
+        backgroundColor: colors.COLOR_FORM_BACKGROUND,
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 30,

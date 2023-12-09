@@ -36,6 +36,8 @@ export default function LoginForm() {
       <Text style={styles.textTitle}>Bienvenido a BookBox</Text>
       <Input
         placeholder="Correo electrónico"
+        placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+        style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
         containerStyle={{ marginBottom: 10 }}
         onChangeText={(text) => {
           formik.setFieldValue("email", text);
@@ -44,6 +46,8 @@ export default function LoginForm() {
       ></Input>
       <Input
         placeholder="Contraseña"
+        placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+        style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
         containerStyle={{ marginBottom: 30 }}
         onChangeText={(text) => {
           formik.setFieldValue("password", text);
@@ -56,7 +60,7 @@ export default function LoginForm() {
         onPress={formik.handleSubmit}
         title={<Text style={styles.loginText}>Iniciar sesión</Text>}
       ></Button>
-      <Text>
+      <Text style={styles.forgotPassword}>
         ¿Olvidaste la contraseña?{" "}
         <Text style={{ color: "#18ACFF", fontWeight: "bold" }}>
           {" "}
@@ -70,6 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
   },
   contBlue: {
     width: 150,
@@ -84,22 +89,28 @@ const styles = StyleSheet.create({
     width: 250,
     height: 60,
     backgroundColor: colors.COLOR_PRIMARY,
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
     borderRadius: 30,
     justifyContent: "center",
     alignContent: "center",
     marginBottom: 20,
   },
   loginText: {
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
   },
   textTitle: {
     marginTop: 10,
     fontWeight: "bold",
     textAlign: "center",
-    fontSize: 22,
+    fontSize: colors.FONT_SIZE_TITLE,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     marginBottom: 40,
+  },
+  forgotPassword: {
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+    fontSize: colors.FONT_SIZE_NORMAL,
   },
 });

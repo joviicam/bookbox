@@ -82,13 +82,15 @@ export default function LoansScreen() {
     <View style={styles.container}>
         <Text style={styles.title}>Prestamos</Text>
         <View style={styles.SearchInput}>
-        <Input
-          rightIcon={
-            <Icon type="material-community" name="magnify" size={30} />
-          }
-          placeholder="Buscar"
-          onChangeText={(text) => searchFilterFunction(text)}
-        ></Input>
+          <Input
+            rightIcon={
+              <Icon type="material-community" name="magnify" size={30} color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)} />
+            }
+            placeholder="Buscar"
+            placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+            style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}}
+            onChangeText={(text) => searchFilterFunction(text)}
+          ></Input>
         </View>
         <ScrollView>
         <View style={styles.loansContainer}>
@@ -108,23 +110,23 @@ export default function LoansScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.GREEN,
+    backgroundColor: colors.COLOR_SECONDARY,
     alignItems: "center",
     justifyContent: "center"
   },
   title: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
     fontWeight: "bold",
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_SECONDARY),
     fontFamily: "Roboto",
   },
   SearchInput: {
     padding: 5,
     width: 300,
     height: 60,
-    color: "white",
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderRadius: 15,
-    backgroundColor: "#E5E5E5",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     marginBottom: 20,
     marginTop: 10,
     flexDirection: "row",

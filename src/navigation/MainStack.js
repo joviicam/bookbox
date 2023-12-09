@@ -16,6 +16,8 @@ import PreferencesScreen from "../screens/PreferencesScreen";
 import ConfigurationScreen from "../screens/ConfigurationScreen";
 import Header from "../components/common/Header";
 import AddBook from "../components/books/AddBook";
+import UserDetailScreen from "../screens/UserDetailScreen";
+import colors from "../utils/colors";
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
@@ -46,6 +48,11 @@ function MainStack() {
           name="AddBookS"
           component={AddBook}
           options={{ headerShown: true, header: () => <Header /> }}
+        />
+        <Stack.Screen
+          name="UserDetailsS"
+          component={UserDetailScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -78,10 +85,13 @@ function MainTabs() {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
           tabBarInactiveTintColor: "gray",
           tabBarIcon: ({ color, size }) => showIcons(route, color, size),
           headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.COLOR_FORM_BACKGROUND,
+          },
         })}
       >
         <Tabs.Screen
@@ -105,10 +115,13 @@ function MainTabs() {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({
-          tabBarActiveTintColor: "black",
+          tabBarActiveTintColor: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
           tabBarInactiveTintColor: "gray",
           tabBarIcon: ({ color, size }) => showIcons(route, color, size),
           headerShown: false,
+          tabBarStyle: {
+            backgroundColor: colors.COLOR_FORM_BACKGROUND,
+          },
         })}
       >
         <Tabs.Screen

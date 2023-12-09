@@ -29,11 +29,11 @@ export default function LoanModal({
               onClose();
             }}
           >
-            <Text style={styles.buttonText}>Aceptar</Text>
+            <Text style={styles.buttonTextAccept}>Aceptar</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-            <Text style={styles.buttonText}>Cancelar</Text>
+            <Text style={styles.buttonTextCancel}>Cancelar</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -43,12 +43,13 @@ export default function LoanModal({
 
 const styles = StyleSheet.create({
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: colors.COLOR_FORM_BACKGROUND,
     padding: 20,
     borderRadius: 15,
   },
   modalTitle: {
-    fontSize: 20,
+    fontSize: colors.FONT_SIZE_TITLE,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     fontWeight: "bold",
     marginBottom: 10,
     textAlign: "center",
@@ -67,19 +68,24 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   cancelButton: {
-    backgroundColor: "red",
+    backgroundColor: colors.COLOR_WARNING,
     padding: 10,
     borderRadius: 5,
     alignItems: "center",
     width: 100,
     borderRadius: 15,
   },
-  buttonText: {
-    color: "white",
+  buttonTextAccept: {
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
+    fontWeight: "bold",
+  },
+  buttonTextCancel: {
+    color: colors.getContrastColor(colors.COLOR_WARNING),
     fontWeight: "bold",
   },
   bookTitle: {
-    fontSize: 16,
+    fontSize: colors.FONT_SIZE_NORMAL,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     marginBottom: 20,
     textAlign: "left",
   },

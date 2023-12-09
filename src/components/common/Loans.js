@@ -53,7 +53,7 @@ export default function Loans(props){
                 <Icon
                     type="material-community"
                     size={30}
-                    color="white"
+                    color={colors.getContrastColor(colors.COLOR_PRIMARY)}
                     name={"bookmark-remove"}
                 />
             </TouchableOpacity>
@@ -63,7 +63,7 @@ export default function Loans(props){
                 <Icon
                     type="material-community"
                     size={30}
-                    color="white"
+                    color={colors.getContrastColor(colors.COLOR_PRIMARY)}
                     name={"bookmark-check"}
                 />
             </TouchableOpacity>
@@ -85,21 +85,26 @@ const styles = StyleSheet.create({
         height: 80,
     },
     containerTitle: {
+        flexDirection: "column",
+        color: colors.getContrastColor(colors.COLOR_PRIMARY),
     },
     nameStyle: {
-        fontSize: 14,
+        fontSize: colors.FONT_SIZE_NORMAL,
         fontWeight: "bold",
-        color: "white",
+        flexDirection: "column",
+        color: colors.getContrastColor(colors.COLOR_PRIMARY),
         marginBottom: 5,
     },
     autorStyle: {
-        fontSize: 12,
-        color: "white",
+        fontSize: colors.FONT_SIZE_SMALL,
+        flexDirection: "column",
+        color: colors.getContrastColor(colors.COLOR_PRIMARY),
         marginBottom: 5,
     },
     emailStyle: {
-        fontSize: 10,
-        color: "white",
+        fontSize: colors.FONT_SIZE_INFO,
+        flexDirection: "column",
+        color: colors.getContrastColor(colors.COLOR_PRIMARY),
         marginBottom: 5,
         fontWeight: "bold",
     },

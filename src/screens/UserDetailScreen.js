@@ -4,43 +4,74 @@ import { useRoute } from "@react-navigation/native";
 import { Button, Input } from "react-native-elements";
 import colors from "../utils/colors";
 import { Picker } from "@react-native-picker/picker";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function UserDetailScreen() {
   const route = useRoute();
-  const { user } = route.params ? route.params : {};
-  const [selectedValue, setSelectedValue] = useState(
-    user.role ? user.role : ""
-  );
+  let user = route.params ? (route.params.user ? route.params.user : {}) : {};
+  const [selectedRole, setSelectedRole] = useState(user.idRol ? user.idRol : null);
+  const [id, setId] = useState(user.id ? user.id : null);
   const [fullName, setFullName] = useState(user.fullName ? user.fullName : "");
   const [email, setEmail] = useState(user.email ? user.email : "");
   const [password, setPassword] = useState(user.password ? user.password : "");
 
+  const formik = useFormik({
+    initialValues: {
+      fullName: fullName,
+      email: email,
+      password: password,
+      idRol: selectedRole ? selectedRole.id : "",
+    },
+    validationSchema: Yup.object({
+      fullName: Yup.string().required("El nombre es obligatorio"),
+      email: Yup.string()
+        .email("El email no es válido")
+        .required("El email es obligatorio"),
+      password: Yup.string().required("La contraseña es obligatoria"),
+      idRol: Yup.string().required("El rol es obligatorio"),
+    }),
+    onSubmit: async (formData) => {
+      await handleSubmit(formData);
+    },
+  });
+
   const mapUser = () => {
-    user.id = user.id ? user.id : undefined;
+    user.id = id;
     user.fullName = fullName;
     user.email = email;
     user.password = password;
-    user.role = selectedValue;
-    console.log(user);
+    user.idRol = selectedRole ? selectedRole : null;
+    user.roleName = selectedRole ? selectedRole.name : null;
   };
 
-  const handlePickerChange = (value) => {
-    setSelectedValue(value);
-  };
+  const roles = [
+    { id: "1", name: "Administrador", description: "Pal admin" },
+    { id: "2", name: "Cliente", description: "Pal cliente" },
+  ];
 
   const handleFullNameChange = (value) => {
     setFullName(value);
+    formik.setFieldValue("fullName", value);
   };
 
   const handleEmailChange = (value) => {
     setEmail(value);
+    formik.setFieldValue("email", value);
   };
 
   const handlePasswordChange = (value) => {
     setPassword(value);
+    formik.setFieldValue("password", value);
   };
 
-  const handleSubmit = () => {
+  const handlePickerChangeRole = (role) => {
+    setSelectedRole(roles.find((r) => r.id === role));
+    formik.setFieldValue("idRol", role);
+  };
+
+  const handleSubmit = async (user) => {
+    mapUser();
     if (user.id) {
       // Editar
     } else {
@@ -66,6 +97,7 @@ export default function UserDetailScreen() {
               placeholderTextColor={colors.getContrastColor(
                 colors.COLOR_FORM_BACKGROUND
               )}
+              errorMessage={formik.errors.fullName}
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
@@ -74,9 +106,11 @@ export default function UserDetailScreen() {
               value={email}
               onChangeText={handleEmailChange}
               placeholder="Correo electrónico"
+              keyboardType="email-address"
               placeholderTextColor={colors.getContrastColor(
                 colors.COLOR_FORM_BACKGROUND
               )}
+              errorMessage={formik.errors.email}
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
@@ -89,35 +123,38 @@ export default function UserDetailScreen() {
               placeholderTextColor={colors.getContrastColor(
                 colors.COLOR_FORM_BACKGROUND
               )}
+              errorMessage={formik.errors.password}
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
             />
             <Picker
               style={styles.picker}
-              selectedValue={selectedValue}
-              onValueChange={handlePickerChange}
+              selectedValue={selectedRole ? selectedRole.id : null}
+              onValueChange={handlePickerChangeRole}
               mode="dropdown"
             >
               <Picker.Item
                 label="Selecciona un rol"
-                value=""
+                value={null}
                 style={{ backgroundColor: colors.COLOR_FORM_BACKGROUND }}
                 color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
               />
-              <Picker.Item
-                label="Administrador"
-                value="administrador"
-                style={{ backgroundColor: colors.COLOR_FORM_BACKGROUND }}
-                color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
-              />
-              <Picker.Item
-                label="Cliente"
-                value="cliente"
-                style={{ backgroundColor: colors.COLOR_FORM_BACKGROUND }}
-                color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
-              />
+              {roles.map((role) => (
+                <Picker.Item
+                  key={role.id}
+                  label={role.name}
+                  value={role.id}
+                  style={{ backgroundColor: colors.COLOR_FORM_BACKGROUND }}
+                  color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+                />
+              ))}
             </Picker>
+            {formik.errors.idRol && (
+              <Text style={{ width: "90%", textAlign: "left", fontSize: colors.FONT_SIZE_SMALL, color: "red" }}>
+                {formik.errors.idRol}
+              </Text>
+            )}
             <View style={styles.buttonsContainer}>
               <Button
                 title="Guardar"
@@ -125,7 +162,7 @@ export default function UserDetailScreen() {
                   color: colors.getContrastColor(colors.COLOR_PRIMARY),
                 }}
                 buttonStyle={styles.saveButton}
-                onPress={() => mapUser()}
+                onPress={formik.handleSubmit}
               />
             </View>
           </View>

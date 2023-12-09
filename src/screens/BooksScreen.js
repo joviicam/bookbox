@@ -100,6 +100,7 @@ export default function BooksScreen() {
             />
           }
           placeholder="Buscar"
+          style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
           placeholderTextColor={colors.getContrastColor(
             colors.COLOR_FORM_BACKGROUND
           )}

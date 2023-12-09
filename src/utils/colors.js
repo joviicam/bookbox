@@ -3,7 +3,7 @@ let theme = "light"; // "light" or "dark" - UTIL PARA EL TEMA DEL MAPA
 // Colores de la app tema claro
 let colorPrimary = "#2F4858"; // (azul) El azulito de casi todos los botones
 let colorSecondary = "#77BA99"; // (verde) Color de fondo de la app
-let formBackground = "#000000"; // El color de fondo de los formularios (ej.: login, creación/edición usuario, etc.)
+let formBackground = "#000000"; // (blanco) El color de fondo de los formularios, inputs de búsqueda y la barra de menú (ej.: login, creación/edición usuario, etc.)
 let colorWarning = "#FF0000"; // (rojo) El color de los mensajes de error y botones de cancelación
 
 let fontSizeGeneral = 15; //normal size = 15, grande = 17, pequeño = 12

@@ -6,6 +6,7 @@ import colors from "../utils/colors";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { doPost } from "../config/axios";
 
 export default function UserDetailScreen() {
   const route = useRoute();
@@ -21,7 +22,7 @@ export default function UserDetailScreen() {
       fullName: fullName,
       email: email,
       password: password,
-      idRol: selectedRole ? selectedRole.id : "",
+      idRol: selectedRole ? selectedRole : "",
     },
     validationSchema: Yup.object({
       fullName: Yup.string().required("El nombre es obligatorio"),
@@ -31,8 +32,8 @@ export default function UserDetailScreen() {
       password: Yup.string().required("La contraseña es obligatoria"),
       idRol: Yup.string().required("El rol es obligatorio"),
     }),
-    onSubmit: async (formData) => {
-      await handleSubmit(formData);
+    onSubmit: async () => {
+      await handleSubmit(user);
     },
   });
 
@@ -75,7 +76,13 @@ export default function UserDetailScreen() {
     if (user.id) {
       // Editar
     } else {
-      // Crear
+      try {
+        console.log(user)
+        const response = await doPost('/usuarios/create', user);
+        console.log(response); // Manejar la respuesta del servidor
+      } catch (error) {
+        console.error(error); // Manejar el error
+      }
     }
   };
 

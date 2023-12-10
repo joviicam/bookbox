@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createRef } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Button, Input } from "react-native-elements";
 import colors from "../../utils/colors";
@@ -7,9 +7,23 @@ import { saveData, getData } from "../../utils/Storage";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doPut } from "../../config/axios";
+import Toast from 'react-native-toast-message';
 
 export default function LoginForm() {
   const navigation = useNavigation();
+
+  const login = async (data) => {
+    try {
+      const response = await doPut("/users/login", data);
+      AsyncStorage.setItem("token", response.data.token);
+      if(response.data.data){
+        navigation.replace("MainTabs");
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const formik = useFormik({
     initialValues: {
@@ -23,9 +37,7 @@ export default function LoginForm() {
       password: Yup.string().required("La contraseña es obligatoria"),
     }),
     onSubmit: async (formData) => {
-      await AsyncStorage.setItem("email", formData.email);
-      await AsyncStorage.setItem("password", formData.password);
-      navigation.replace("MainTabs");
+      await login(formData)
     },
   });
   return (
@@ -52,6 +64,7 @@ export default function LoginForm() {
         onChangeText={(text) => {
           formik.setFieldValue("password", text);
         }}
+        secureTextEntry={true}
         errorMessage={formik.errors.password}
       ></Input>
       <Button

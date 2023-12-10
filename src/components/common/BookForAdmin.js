@@ -6,8 +6,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function BookForAdmin(props) {
   const { bookKey, nombre, autor, genero } = props;
-  console.log("Tengo hambre");
-  console.log(props);
   const navigation = useNavigation();
   const libro = {
     id: bookKey,

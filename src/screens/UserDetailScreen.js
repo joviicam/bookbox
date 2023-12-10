@@ -1,21 +1,25 @@
 import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Button, Input } from "react-native-elements";
 import colors from "../utils/colors";
 import { Picker } from "@react-native-picker/picker";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { doPost } from "../config/axios";
+import { doGet, doPost, doPut } from "../config/axios";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
 
 export default function UserDetailScreen() {
   const route = useRoute();
+  const navigation = useNavigation();
   let user = route.params ? (route.params.user ? route.params.user : {}) : {};
   const [selectedRole, setSelectedRole] = useState(user.idRol ? user.idRol : null);
   const [id, setId] = useState(user.id ? user.id : null);
   const [fullName, setFullName] = useState(user.fullName ? user.fullName : "");
   const [email, setEmail] = useState(user.email ? user.email : "");
-  const [password, setPassword] = useState(user.password ? user.password : "");
+  const [password, setPassword] = useState("");
+  const [roles, setRoles] = useState([]);
 
   const formik = useFormik({
     initialValues: {
@@ -29,8 +33,8 @@ export default function UserDetailScreen() {
       email: Yup.string()
         .email("El email no es válido")
         .required("El email es obligatorio"),
-      password: Yup.string().required("La contraseña es obligatoria"),
-      idRol: Yup.string().required("El rol es obligatorio"),
+      password: user.id ? "" : Yup.string().required("La contraseña es obligatoria"),
+      //idRol: Yup.string().required("El rol es obligatorio"),
     }),
     onSubmit: async () => {
       await handleSubmit(user);
@@ -46,10 +50,18 @@ export default function UserDetailScreen() {
     user.roleName = selectedRole ? selectedRole.name : null;
   };
 
-  const roles = [
-    { id: "1", name: "Administrador", description: "Pal admin" },
-    { id: "2", name: "Cliente", description: "Pal cliente" },
-  ];
+  useEffect(() => {
+    const getRoles = async () => {
+      try {
+        //const response = await doGet('/roles/getAll');
+        //console.log(response.data.data)
+        //setRoles(response.data.data);
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    getRoles();
+  }, [])
 
   const handleFullNameChange = (value) => {
     setFullName(value);
@@ -74,12 +86,31 @@ export default function UserDetailScreen() {
   const handleSubmit = async (user) => {
     mapUser();
     if (user.id) {
-      // Editar
+      /* try {
+        const response = await doPut('/usuarios/update', user);
+        console.log(response); // Manejar la respuesta del servidor
+      } catch (error) {
+        console.error(error); // Manejar el error
+      } */
     } else {
       try {
+        //////////////////////
+        user.idRol = {
+          id: "db8d0ce"
+        }
+        ///////////////////////
         console.log(user)
         const response = await doPost('/usuarios/create', user);
-        console.log(response); // Manejar la respuesta del servidor
+        if(response.data.statusCode === 200){
+          navigation.goBack();
+          Toast.show({
+            type: 'success',
+            text1: 'Usuario creado correctamente',
+            visibilityTime: 3000,
+            autoHide: true,
+            position: 'bottom',
+          });
+        } // Manejar la respuesta del servidor
       } catch (error) {
         console.error(error); // Manejar el error
       }
@@ -122,7 +153,7 @@ export default function UserDetailScreen() {
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
             />
-            <Input
+            {!user.id ? <Input
               value={password}
               onChangeText={handlePasswordChange}
               secureTextEntry
@@ -134,7 +165,7 @@ export default function UserDetailScreen() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
-            />
+            /> : null}
             <Picker
               style={styles.picker}
               selectedValue={selectedRole ? selectedRole.id : null}

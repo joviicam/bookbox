@@ -88,8 +88,8 @@ instance.interceptors.response.use(
   }
 );
 
-export const doGet = (url, params) => {
-  return instance.get(url, { params });
+export const doGet = (url) => {
+  return instance.get(url);
 };
 
 export const doPost = (url, data) => {

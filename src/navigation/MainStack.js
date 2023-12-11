@@ -7,7 +7,6 @@ import LoginScreen from "../screens/LoginScreen";
 import IndexScreen from "../screens/IndexScreen";
 import BooksScreen from "../screens/BooksScreen";
 import MapScreen from "../screens/MapScreen";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import UsersScreen from "../screens/UsersScreen";
 import LoansScreen from "../screens/LoansScreen";
 import ApplicationsScreen from "../screens/ApplicationsScreen";
@@ -20,6 +19,8 @@ import UserDetailScreen from "../screens/UserDetailScreen";
 import colors from "../utils/colors";
 import BookDetailScreen from "../screens/BookDetailScreen";
 import HeaderForConfig from "../components/common/HeaderForConfig";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 //import { createDrawerNavigator } from "@react-navigation/drawer";
 
 const Stack = createNativeStackNavigator();
@@ -69,6 +70,16 @@ function MainStack() {
 function MainTabs() {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await AsyncStorage.getItem("user");
+      setUser(JSON.parse(userData));
+      console.log(userData);
+    };
+    getUserData();
+  }, []);
 
   // Obtener el correo y contraseña guardados en el storage
   useEffect(() => {
@@ -86,6 +97,8 @@ function MainTabs() {
     };
     getPasswordData();
   }, []);
+  console.log(email);
+  console.log(password);
 
   if (email === "joviicam@gmail.com" && password === "123") {
     return (

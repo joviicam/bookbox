@@ -1,10 +1,33 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 let theme = "light"; // "light" or "dark" - UTIL PARA EL TEMA DEL MAPA
 
+let colorPrimary = "#2F4858";
+let colorSecondary = "#77BA99";
+let formBackground = "#FFFFFF";
+let colorWarning = "#FF0000";
+
+const changeTheme = (newTheme) => {
+  console.log("cambio tema a " + newTheme)
+  if (newTheme === "dark") {
+    theme = "dark";
+    AsyncStorage.setItem("theme", "dark");
+    colorPrimary = "#2F4858"; // (azul) El azulito de casi todos los botones
+    colorSecondary = "000000"; // (verde) Color de fondo de la app
+    formBackground = "#000000"; // (blanco) El color de fondo de los formularios, inputs de búsqueda y la barra de menú (ej.: login, creación/edición usuario, etc.)
+    colorWarning = "#FF0000"; // (rojo) El color de los mensajes de error y botones de cancelación
+  } else {
+    theme = "light";
+    AsyncStorage.setItem("theme", "light");
+    // Colores de la app tema claro
+    colorPrimary = "#2F4858"; // (azul) El azulito de casi todos los botones
+    colorSecondary = "#77BA99"; // (verde) Color de fondo de la app
+    formBackground = "#FFFFFF"; // (blanco) El color de fondo de los formularios, inputs de búsqueda y la barra de menú (ej.: login, creación/edición usuario, etc.)
+    colorWarning = "#FF0000"; // (rojo) El color de los mensajes de error y botones de cancelación
+  }
+};
+
 // Colores de la app tema claro
-let colorPrimary = "#2F4858"; // (azul) El azulito de casi todos los botones
-let colorSecondary = "#77BA99"; // (verde) Color de fondo de la app
-let formBackground = "#000000"; // (blanco) El color de fondo de los formularios, inputs de búsqueda y la barra de menú (ej.: login, creación/edición usuario, etc.)
-let colorWarning = "#FF0000"; // (rojo) El color de los mensajes de error y botones de cancelación
 
 let fontSizeGeneral = 15; //normal size = 15, grande = 17, pequeño = 12
 
@@ -27,6 +50,7 @@ export default {
   FONT_SIZE_INFO: fontSizeInfo,
   THEME: theme,
   getContrastColor,
+  changeTheme,
 };
 
 function getContrastColor(hexColor) {

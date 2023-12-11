@@ -30,14 +30,15 @@ instance.interceptors.response.use(
     if (response.data.statusCode >= 200 && response.data.statusCode < 300) {
       return Promise.resolve(response);
     }
-    //return Promise.reject(response);
+      return Promise.reject(response);
   },
   (error) => {
-    console.log(error)
+    console.log("trone en el response")
+    console.log(error);
     if (error.response && error.response.data.statusCode === 403) {
       Toast.show({
         type: 'error',
-        text1: 'El usuario no cuenta con los permisos',
+        text1: 'El usuario no cuenta con los permisos para acceder a esta función',
         visibilityTime: 3000,
         autoHide: true,
         position: 'bottom',
@@ -75,7 +76,6 @@ instance.interceptors.response.use(
         position: 'bottom',
       });
     } else {
-      console.log("");
       Toast.show({
         type: 'error',
         text1: `Error desconocido (status: ${error.response.data.statusCode})`,

@@ -1,14 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LogoutButton from "../components/common/LogoutButton";
 import ChangePasswordModal from "../components/account/ChangePasswordModal"; // Import the modal component
 import { useNavigation } from "@react-navigation/native";
 import colors from "../utils/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { doPut } from "../config/axios";
+import Toast from "react-native-toast-message";
 
 export default function ConfigurationScreen() {
   const navigation = useNavigation();
-  const [isChangePasswordModalVisible, setChangePasswordModalVisible] =
-    useState(false);
+  const [isChangePasswordModalVisible, setChangePasswordModalVisible] = useState(false);
+  const [userStored, setUserStored] = useState({});
+
+  useEffect(() => {
+    const getUserStored = async () => {
+      const user = await AsyncStorage.getItem("user");
+      setUserStored(JSON.parse(user));
+    }
+    getUserStored();
+  }, [])
+
+  const handlePassChange = async (newPassword) => {
+    try {
+      const response = await doPut("/users/changePass", { password: userStored.password, email: userStored.email, newPassword: newPassword });
+      if(response.data.statusCode === 200){
+        Toast.show({
+          type: 'success',
+          position: 'bottom',
+          text1: 'La contraseña se cambió correctamente',
+          visibilityTime: 3000,
+          autoHide: true,
+          onHide: () => {}
+        });
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleOpenChangePasswordModal = () => {
     setChangePasswordModalVisible(true);
@@ -31,7 +60,14 @@ export default function ConfigurationScreen() {
         </View>
       </TouchableOpacity>
       <View style={styles.logout}>
-        <LogoutButton onPress={() => navigation.replace("LoginS")} />
+        <LogoutButton onPress={async () => {
+          await AsyncStorage.removeItem("user");
+          await AsyncStorage.removeItem("token");
+          navigation.reset({
+            index: 0,
+            routes: [{ name: 'LoginS' }],
+          });
+        }} />
       </View>
 
       {/* Include the ChangePasswordModal component */}
@@ -39,8 +75,7 @@ export default function ConfigurationScreen() {
         isVisible={isChangePasswordModalVisible}
         onClose={handleCloseChangePasswordModal}
         onChangePassword={(newPassword) => {
-          // Implement your logic for changing the password here
-          console.log("New Password:", newPassword);
+          handlePassChange(newPassword); // Call the function to change the password
           handleCloseChangePasswordModal(); // Close the modal after changing the password
         }}
       />

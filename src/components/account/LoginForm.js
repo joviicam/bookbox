@@ -15,8 +15,9 @@ export default function LoginForm() {
 
   const login = async (data) => {
     try {
-      const response = await doPut("/users/login", data);
+      const response = await doPut("/usuarios/login", data);
       AsyncStorage.setItem("token", response.data.token);
+      AsyncStorage.setItem("user", JSON.stringify(response.data));
       if(response.data.data){
         navigation.replace("MainTabs");
       }

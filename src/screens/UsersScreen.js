@@ -6,6 +6,7 @@ import colors from "../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 import User from "../components/common/User";
 import { useEffect, useState } from "react";
+import { doGet } from "../config/axios";
 
 export default function UsersScreen() {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -13,50 +14,12 @@ export default function UsersScreen() {
   let [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const usersArray = [
-      {
-        id: "1",
-        fullName: "Puchis Bahena",
-        email: "puchis@gmail.com",
-        password: "123456",
-        idRol: { id: "2", name: "Cliente", description: "Pal cliente" },
-        roleName: "Cliente",
-      },
-      {
-        id: "2",
-        fullName: "Luis Bahena",
-        email: "lusi@gmail.com",
-        password: "123456",
-        idRol: { id: "1", name: "Administrador", description: "Pal admin" },
-        roleName: "Administrador",
-      },
-      {
-        id: "3",
-        fullName: "Poncio Pilato",
-        email: "poncio@gmail.com",
-        password: "123456",
-        idRol: { id: "1", name: "Administrador", description: "Pal admin" },
-        roleName: "Administrador",
-      },
-      {
-        id: "4",
-        fullName: "Judas Iscariote",
-        email: "judas@gmail.com",
-        password: "123456",
-        idRol: { id: "1", name: "Administrador", description: "Pal admin" },
-        roleName: "Administrador",
-      },
-      {
-        id: "5",
-        fullName: "Pedro Perez",
-        email: "pedro@gmail.com",
-        password: "123456",
-        idRol: { id: "1", name: "Administrador", description: "Pal admin" },
-        roleName: "Administrador",
-      },
-    ];
-    setUsers(usersArray);
-  }, []);
+    const getUsers = async () => {
+    const response = await doGet("/usuarios/getAll");
+    setUsers(response.data.data);
+    }
+    getUsers();
+  }, [users]);
 
   useEffect(() => {
     setFilteredUsers(users);

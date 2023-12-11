@@ -28,54 +28,50 @@ export default function BookDetailScreen() {
   );
   const [id, setId] = useState(libro.id ? libro.id : undefined);
 
-  const mapLibro = () => {
-    libro.id = libro.id ? libro.id : undefined;
-    libro.name = libro.name ? libro.name : "";
-    libro.author = libro.author ? libro.author : "";
-    libro.genre = libro.genre ? libro.genre : "";
-    libro.year = libro.year ? libro.year : "";
-    libro.pages = libro.pages ? libro.pages : "";
-    libro.quantity = libro.quantity ? libro.quantity : "";
-    console.log(libro);
-  };
-
   const handlePickerChange = (value) => {
     setGenre(value);
+    formik.setFieldValue("genre", value);
   };
 
   const handleNombreChange = (value) => {
     setName(value);
+    formik.setFieldValue("name", value);
   };
 
   const handleAutorChange = (value) => {
     setAuthor(value);
+    formik.setFieldValue("author", value);
   };
 
   const handleYearChange = (value) => {
     setYear(parseInt(value));
+    formik.setFieldValue("year", parseInt(value));
   };
 
   const handlePagesChange = (value) => {
     setPages(parseInt(value));
+    formik.setFieldValue("pages", parseInt(value));
   };
 
   const handleQuantityChange = (value) => {
     setQuantity(parseInt(value));
+    formik.setFieldValue("quantity", parseInt(value));
   };
 
   const handleEditorialChange = (value) => {
     setEditorial(value);
+    formik.setFieldValue("editorial", value);
   };
 
   const formik = useFormik({
     initialValues: {
-      name: libro.name,
-      author: libro.author,
-      year: libro.year,
-      pages: libro.pages,
-      genre: libro.genre,
-      quantity: libro.quantity,
-      editorial: libro.editorial,
+      name: name,
+      author: author,
+      year: year,
+      pages: pages,
+      genre: genre,
+      quantity: quantity,
+      editorial: editorial,
     },
     validationSchema: Yup.object({
       name: Yup.string().required("El nombre es obligatorio"),
@@ -88,6 +84,7 @@ export default function BookDetailScreen() {
     }),
     onSubmit: async (formData) => {
       console.log(formData);
+      console.log(libro.id);
       try {
         const response = await doPut(`/libros/update/${libro.id}`, formData);
         console.log(response);

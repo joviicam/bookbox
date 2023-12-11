@@ -5,7 +5,7 @@ import ChangePasswordModal from "../components/account/ChangePasswordModal"; // 
 import { useNavigation } from "@react-navigation/native";
 import colors from "../utils/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { doPut } from "../config/axios";
+import { doPut, doGet } from "../config/axios";
 import Toast from "react-native-toast-message";
 
 export default function ConfigurationScreen() {
@@ -13,6 +13,29 @@ export default function ConfigurationScreen() {
   const [isChangePasswordModalVisible, setChangePasswordModalVisible] =
     useState(false);
   const [userStored, setUserStored] = useState(null);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await AsyncStorage.getItem("user");
+      setUser(JSON.parse(userData));
+      console.log(JSON.parse(userData));
+    };
+    getUserData();
+  }, []);
+
+  const actualizarDatos = async () => {
+    try {
+      console.log(user.idUser);
+      const response = await doGet(`/usuarios/getById/${user.idUser}`);
+      if (response.data.statusCode === 200) {
+        console.log(response.data.data);
+        navigation.navigate("UserDetailsS", { user: response.data.data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const getUserStored = async () => {
@@ -55,7 +78,7 @@ export default function ConfigurationScreen() {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => navigation.navigate("UserDetailsS")}>
+      <TouchableOpacity onPress={actualizarDatos}>
         <View style={styles.optionContainer}>
           <Text style={styles.option}>Actualizar datos personales</Text>
         </View>

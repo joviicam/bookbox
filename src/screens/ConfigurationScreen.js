@@ -75,6 +75,9 @@ export default function ConfigurationScreen() {
           onPress={async () => {
             await AsyncStorage.removeItem("user");
             await AsyncStorage.removeItem("token");
+            await AsyncStorage.removeItem("email");
+            await AsyncStorage.removeItem("password");
+            await AsyncStorage.removeItem("idUser");
             navigation.reset({
               index: 0,
               routes: [{ name: "LoginS" }],

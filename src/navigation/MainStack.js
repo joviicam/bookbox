@@ -76,7 +76,7 @@ function MainTabs() {
     const getUserData = async () => {
       const userData = await AsyncStorage.getItem("user");
       setUser(JSON.parse(userData));
-      console.log(userData);
+      console.log(JSON.parse(userData));
     };
     getUserData();
   }, []);
@@ -99,8 +99,10 @@ function MainTabs() {
   }, []);
   console.log(email);
   console.log(password);
+  console.log("user en mainstack");
+  console.log(user);
 
-  if (email === "joviicam@gmail.com" && password === "123") {
+  if (user && user.role === "cliente") {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({

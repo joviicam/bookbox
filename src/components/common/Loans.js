@@ -6,7 +6,7 @@ import colors from "../../utils/colors";
 import Toast from "react-native-toast-message";
 
 export default function Loans(props) {
-  const { nombre, autor, email } = props;
+  const { author, email, book} = props;
   //cuando se presiona el boton de confirmar prestamo lo guarda en un array que se mandara a otra pantalla
   //cuando se presiona el boton de cancelar prestamo lo elimina del array
 
@@ -37,8 +37,8 @@ export default function Loans(props) {
   return (
     <View style={styles.btn}>
       <View style={styles.containerTitle}>
-        <Text style={styles.nameStyle}>{nombre}</Text>
-        <Text style={styles.autorStyle}>{autor}</Text>
+        <Text style={styles.nameStyle}>{book}</Text>
+        <Text style={styles.autorStyle}>{author}</Text>
         <Text style={styles.emailStyle}>{email}</Text>
       </View>
       <View style={styles.btnStatus}>

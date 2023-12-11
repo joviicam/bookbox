@@ -10,6 +10,7 @@ export default function LoansScreen() {
   let [loans, setLoans] = useState([]);
 
   useEffect(() => {
+    console.log("useEffect");
     const loansArray = [
       {
         key: "1",

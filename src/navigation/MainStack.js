@@ -87,7 +87,7 @@ function MainTabs() {
     getPasswordData();
   }, []);
 
-  if (email === "joviicam9@gmail.com" && password === "123456") {
+  if (email === "joviicam@gmail.com" && password === "123") {
     return (
       <Tabs.Navigator
         screenOptions={({ route }) => ({

@@ -4,59 +4,23 @@ import { Input, Icon, Button } from "react-native-elements";
 import colors from "../utils/colors";
 import BookForAdmin from "../components/common/BookForAdmin";
 import { useNavigation } from "@react-navigation/native";
+import { doGet } from "../config/axios";
 
 export default function BooksScreen() {
+  const [searchText, setSearchText] = useState("");
+  const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
-  let [books, setBooks] = useState([]);
 
   const navigation = useNavigation();
 
   useEffect(() => {
-    const booksArray = [
-      {
-        key: "1",
-        nombre: "El principito",
-        autor: "Antoine de Saint-Exupéry",
-        genero: "Ficción",
-      },
-      {
-        key: "2",
-        nombre: "Harry Potter y la piedra filosofal",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "3",
-        nombre: "Harry Potter y la cámara secreta",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "4",
-        nombre: "Harry Potter y el prisionero de Azkaban",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "5",
-        nombre: "Harry Potter y el cáliz de fuego",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "6",
-        nombre: "Harry Potter y la orden del fénix",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "7",
-        nombre: "Harry Potter y el misterio del príncipe",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-    ];
-    setBooks(booksArray);
+    const getBooks = async () => {
+      const response = await doGet("/libros/getAll");
+      if (response.data && response.data.data) {
+        setBooks(response.data.data);
+      }
+    };
+    getBooks();
   }, []);
 
   useEffect(() => {
@@ -66,18 +30,22 @@ export default function BooksScreen() {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = books.filter((item) => {
-        const nombre = item.nombre
-          ? item.nombre.toUpperCase()
-          : "".toUpperCase();
-        const key = item.key ? item.key.toString() : "";
-        const autor = item.autor ? item.autor.toString() : "";
-        const gender = item.genero ? item.genero.toString() : "";
-        const textData = text.toUpperCase();
+        const name = item.name ? item.name.toLowerCase() : "";
+        const author = item.author ? item.author.toLowerCase() : "";
+        const editorial = item.editorial ? item.editorial.toLowerCase() : "";
+        const year = item.year ? item.year.toString() : "";
+        const pages = item.pages ? item.pages.toString() : "";
+        const genre = item.genre ? item.genre.toLowerCase() : "";
+        const quantity = item.quantity ? item.quantity.toString() : "";
+        const textData = text.toLowerCase();
         return (
-          nombre.indexOf(textData) > -1 ||
-          autor.indexOf(textData) > -1 ||
-          gender.indexOf(textData) > -1 ||
-          key.indexOf(textData) > -1
+          name.includes(textData) ||
+          author.includes(textData) ||
+          editorial.includes(textData) ||
+          year.includes(textData) ||
+          pages.includes(textData) ||
+          genre.includes(textData) ||
+          quantity.includes(textData)
         );
       });
       setFilteredBooks(newData);
@@ -100,7 +68,9 @@ export default function BooksScreen() {
             />
           }
           placeholder="Buscar"
-          style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
+          style={{
+            color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+          }}
           placeholderTextColor={colors.getContrastColor(
             colors.COLOR_FORM_BACKGROUND
           )}
@@ -124,10 +94,15 @@ export default function BooksScreen() {
           {filteredBooks.map((book) => {
             return (
               <BookForAdmin
-                bookKey={book.key}
-                nombre={book.nombre}
-                autor={book.autor}
-                genero={book.genero}
+                key={book.id}
+                bookKey={book.id}
+                name={book.name}
+                author={book.author}
+                editorial={book.editorial}
+                year={book.year}
+                pages={book.pages}
+                genre={book.genre}
+                quantity={book.quantity}
               />
             );
           })}

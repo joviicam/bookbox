@@ -4,33 +4,111 @@ import { useRoute } from "@react-navigation/native";
 import { Button, Input } from "react-native-elements";
 import colors from "../utils/colors";
 import { Picker } from "@react-native-picker/picker";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { doPut } from "../config/axios";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function BookDetailScreen() {
+  const navigation = useNavigation();
   const route = useRoute();
   const { libro } = route.params ? route.params : {};
-  const [gender, setGender] = useState(libro.gender ? libro.gender : "");
-  const [nombre, setNombre] = useState(libro.nombre ? libro.nombre : "");
-  const [autor, setAutor] = useState(libro.autor ? libro.autor : "");
+  const [genre, setGenre] = useState(libro.genre ? libro.genre : "");
+  const [name, setName] = useState(libro.name ? libro.name : "");
+  const [author, setAuthor] = useState(libro.author ? libro.author : "");
+  const [year, setYear] = useState(libro.year ? libro.year : "");
+  const [pages, setPages] = useState(libro.pages ? libro.pages : "");
+  const [quantity, setQuantity] = useState(
+    libro.quantity ? libro.quantity : ""
+  );
+  const [editorial, setEditorial] = useState(
+    libro.editorial ? libro.editorial : ""
+  );
+  const [id, setId] = useState(libro.id ? libro.id : undefined);
 
   const mapLibro = () => {
     libro.id = libro.id ? libro.id : undefined;
-    libro.nombre = libro.nombre ? libro.nombre : "";
-    libro.autor = libro.autor ? libro.autor : "";
-    libro.gender = libro.gender ? libro.gender : "";
+    libro.name = libro.name ? libro.name : "";
+    libro.author = libro.author ? libro.author : "";
+    libro.genre = libro.genre ? libro.genre : "";
+    libro.year = libro.year ? libro.year : "";
+    libro.pages = libro.pages ? libro.pages : "";
+    libro.quantity = libro.quantity ? libro.quantity : "";
     console.log(libro);
   };
 
   const handlePickerChange = (value) => {
-    setGender(value);
+    setGenre(value);
   };
 
   const handleNombreChange = (value) => {
-    setNombre(value);
+    setName(value);
   };
 
   const handleAutorChange = (value) => {
-    setAutor(value);
+    setAuthor(value);
   };
+
+  const handleYearChange = (value) => {
+    setYear(parseInt(value));
+  };
+
+  const handlePagesChange = (value) => {
+    setPages(parseInt(value));
+  };
+
+  const handleQuantityChange = (value) => {
+    setQuantity(parseInt(value));
+  };
+
+  const handleEditorialChange = (value) => {
+    setEditorial(value);
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      name: libro.name,
+      author: libro.author,
+      year: libro.year,
+      pages: libro.pages,
+      genre: libro.genre,
+      quantity: libro.quantity,
+      editorial: libro.editorial,
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("El nombre es obligatorio"),
+      author: Yup.string().required("El autor es obligatorio"),
+      year: Yup.number().required("El año es obligatorio"),
+      pages: Yup.number().required("Las páginas son obligatorias"),
+      genre: Yup.string().required("El género es obligatorio"),
+      quantity: Yup.number().required("La cantidad es obligatoria"),
+      editorial: Yup.string().required("La editorial es obligatoria"),
+    }),
+    onSubmit: async (formData) => {
+      console.log(formData);
+      try {
+        const response = await doPut(`/libros/update/${libro.id}`, formData);
+        console.log(response);
+        if (response.data.statusCode === 200) {
+          alert("Libro actualizado correctamente");
+          formik.resetForm();
+          navigation.navigate("BooksS");
+          Toast.show({
+            text1: "Libro actualizado correctamente",
+            type: "success",
+            visibilityTime: 2000,
+          });
+        } else {
+          alert("Error al actualizar el libro");
+        }
+      } catch (error) {
+        console.log(error);
+        alert("Error al actualizar el libro");
+      }
+    },
+  });
 
   const handleSubmit = () => {
     if (libro.id) {
@@ -41,7 +119,7 @@ export default function BookDetailScreen() {
   };
 
   return (
-    <View>
+    <KeyboardAwareScrollView>
       <ImageBackground
         source={require("../../assets/images/libreria.jpg")}
         style={styles.background}
@@ -52,7 +130,7 @@ export default function BookDetailScreen() {
               {libro.id ? "Editar datos" : "Agregar libro"}
             </Text>
             <Input
-              value={nombre}
+              value={name}
               onChangeText={handleNombreChange}
               placeholder="Nombre del libro"
               placeholderTextColor={colors.getContrastColor(
@@ -61,9 +139,10 @@ export default function BookDetailScreen() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
+              errorMessage={formik.errors.name}
             />
             <Input
-              value={autor}
+              value={author}
               onChangeText={handleAutorChange}
               placeholder="Autor"
               placeholderTextColor={colors.getContrastColor(
@@ -72,12 +151,67 @@ export default function BookDetailScreen() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
+              errorMessage={formik.errors.author}
             />
+            <Input
+              value={year.toString()}
+              onChangeText={handleYearChange}
+              placeholder="Año"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.year}
+            />
+            <Input
+              value={pages.toString()}
+              onChangeText={handlePagesChange}
+              placeholder="Páginas"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.pages}
+            />
+            <Input
+              value={quantity.toString()}
+              onChangeText={handleQuantityChange}
+              placeholder="Cantidad"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.quantity}
+            />
+            <Input
+              value={editorial}
+              onChangeText={handleEditorialChange}
+              placeholder="Editorial"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.editorial}
+            />
+
             <Picker
               style={styles.picker}
-              gender={gender}
+              genre={genre}
+              selectedValue={genre}
               onValueChange={handlePickerChange}
               mode="dropdown"
+              error={formik.errors.genre}
             >
               <Picker.Item
                 label="Selecciona un género"
@@ -117,14 +251,15 @@ export default function BookDetailScreen() {
                 titleStyle={{
                   color: colors.getContrastColor(colors.COLOR_PRIMARY),
                 }}
+                type="submit"
                 buttonStyle={styles.saveButton}
-                onPress={() => mapLibro()}
+                onPress={formik.handleSubmit}
               />
             </View>
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -132,7 +267,7 @@ const styles = StyleSheet.create({
   containerLogo: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 100,
+    marginTop: 10,
   },
   background: {
     resizeMode: "cover",
@@ -171,11 +306,9 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: "100%",
-    marginBottom: 20,
     color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
   },
   saveButton: {
-    marginTop: 20,
     width: "80%",
     height: 60,
     borderRadius: 30,
@@ -183,6 +316,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.COLOR_PRIMARY,
   },
   buttonsContainer: {
+    marginTop: -40,
     flexDirection: "row",
     justifyContent: "space-around",
     width: "100%",

@@ -11,19 +11,20 @@ import Toast from "react-native-toast-message";
 export default function ConfigurationScreen() {
   const navigation = useNavigation();
   const [isChangePasswordModalVisible, setChangePasswordModalVisible] = useState(false);
-  const [userStored, setUserStored] = useState({});
+  const [userStored, setUserStored] = useState(null);
 
   useEffect(() => {
     const getUserStored = async () => {
       const user = await AsyncStorage.getItem("user");
       setUserStored(JSON.parse(user));
+      console.log(userStored)
     }
     getUserStored();
   }, [])
 
   const handlePassChange = async (newPassword) => {
     try {
-      const response = await doPut("/users/changePass", { password: userStored.password, email: userStored.email, newPassword: newPassword });
+      const response = await doPut("/usuarios/changePass", { password: userStored.password, email: userStored.email, newPassword: newPassword });
       if(response.data.statusCode === 200){
         Toast.show({
           type: 'success',

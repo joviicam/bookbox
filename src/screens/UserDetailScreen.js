@@ -86,20 +86,29 @@ export default function UserDetailScreen() {
   const handleSubmit = async (user) => {
     mapUser();
     if (user.id) {
-      /* try {
-        const response = await doPut('/usuarios/update', user);
-        console.log(response); // Manejar la respuesta del servidor
+      try {
+        console.log(user)
+        const response = await doPut(`/usuarios/update/${user.id}`, user);
+        if(response.data.statusCode === 200){
+          navigation.goBack();
+          Toast.show({
+            type: 'success',
+            text1: 'Usuario actualizado correctamente',
+            visibilityTime: 3000,
+            autoHide: true,
+            position: 'bottom',
+          });
+        } // Manejar la respuesta del servidor
       } catch (error) {
         console.error(error); // Manejar el error
-      } */
+      } 
     } else {
       try {
         //////////////////////
         user.idRol = {
           id: "db8d0ce"
         }
-        ///////////////////////
-        console.log(user)
+        //////////////////////
         const response = await doPost('/usuarios/create', user);
         if(response.data.statusCode === 200){
           navigation.goBack();
@@ -152,6 +161,7 @@ export default function UserDetailScreen() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
+              //
             />
             {!user.id ? <Input
               value={password}

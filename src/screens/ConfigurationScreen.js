@@ -24,10 +24,18 @@ export default function ConfigurationScreen() {
     getUserData();
   }, []);
 
+  let userId = {};
+  if (user && user.data && user.data.idUser) {
+    userId = {
+      idUser: user.data.idUser,
+    };
+    console.log("te amo junior h <3 se que escribiste intro para mi");
+    console.log(userId);
+  }
+
   const actualizarDatos = async () => {
     try {
-      console.log(user.idUser);
-      const response = await doGet(`/usuarios/getById/${user.idUser}`);
+      const response = await doGet(`/usuarios/getById/${userId.idUser}`);
       if (response.data.statusCode === 200) {
         console.log(response.data.data);
         navigation.navigate("UserDetailsS", { user: response.data.data });

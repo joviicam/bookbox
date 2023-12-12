@@ -7,8 +7,8 @@ export default function LoanModal({
   isVisible,
   onClose,
   onConfirm,
-  nombre,
-  autor,
+  name,
+  author,
 }) {
   return (
     <Modal isVisible={isVisible} onBackdropPress={onClose}>
@@ -17,8 +17,10 @@ export default function LoanModal({
           ¿Desea solicitar un préstamo de este libro?{"\n"}
         </Text>
         <Text style={styles.bookTitle}>
-          Nombre: {nombre}
-          {"\n\n"}Autor: {autor}
+          name: {name}
+          {"\n\n"}author: {author}
+          {"\n\n"}
+          Duración del préstamo: 3 días
         </Text>
 
         <View style={styles.buttonContainer}>

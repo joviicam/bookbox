@@ -3,50 +3,82 @@ import { View, Text, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { StyleSheet } from "react-native";
 import colors from "../../utils/colors";
-import LoanModal from "./LoanModal"; // Import the LoanModal component
+import LoanModal from "./LoanModal";
 import Toast from "react-native-toast-message";
+import { doPost } from "../../config/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 export default function Book(props) {
-  const { nombre, autor, genero } = props;
+  const { name, author, genre, bookKey } = props;
   const [isLoanModalVisible, setLoanModalVisible] = useState(false);
   const [isLoanConfirmed, setLoanConfirmed] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const userData = await AsyncStorage.getItem("user");
+      setUser(JSON.parse(userData));
+      console.log("ayuda por favor");
+      console.log(JSON.parse(userData));
+    };
+    getUserData();
+  }, []);
+
+  let formData = {};
+  if (user && user.data && user.data.idUser) {
+    formData = {
+      idUser: {
+        id: user.data.idUser,
+      },
+      idBook: {
+        id: bookKey,
+      },
+    };
+    console.log("te amo junior h <3");
+    console.log(formData);
+  }
 
   const toggleLoanModal = () => {
-    if (isLoanConfirmed) {
-      Toast.show({
-        type: "error",
-        text1: "Error",
-        text2: "Ya solicitaste este libro",
-        visibilityTime: 3000,
-        autoHide: true,
-        onHide: () => {},
-      });
-      return;
-    } else {
-      setLoanModalVisible(!isLoanModalVisible);
-    }
+    setLoanModalVisible(!isLoanModalVisible);
   };
 
-  const handleLoanConfirm = () => {
-    console.log("Loan confirmed");
-    setLoanConfirmed(true);
-    toggleLoanModal();
-    Toast.show({
-      type: "success",
-      text1: "Préstamo confirmado",
-      text2: "El libro se ha añadido a tu lista de préstamos",
-      visibilityTime: 3000,
-      autoHide: true,
-      onHide: () => {},
-    });
+  const handleLoanConfirm = async () => {
+    console.log("entre al handleLoanConfirm");
+    console.log(formData);
+    try {
+      const response = await doPost("/prestamos/create", formData);
+      console.log(response);
+      if (response.data.statusCode === 200) {
+        console.log("Loan confirmed");
+        setLoanConfirmed(true);
+        toggleLoanModal();
+        Toast.show({
+          type: "success",
+          text1: "Solicitud de préstamo confirmado",
+          text2:
+            "El libro se ha añadidirá a tu lista de préstamos una vez la solicitud sea aprobada",
+          visibilityTime: 3000,
+          autoHide: true,
+          position: "bottom",
+          onHide: () => {},
+        });
+        alert("Solicitud de préstamo confirmado");
+      } else {
+        alert("Error al crear el libro");
+      }
+    } catch (error) {
+      console.log(error);
+      alert("Error al crear el libro");
+    }
   };
 
   return (
     <View style={styles.btn}>
       <View style={styles.containerTitle}>
-        <Text style={styles.nameStyle}>{nombre}</Text>
-        <Text style={styles.autorStyle}>{autor}</Text>
-        <Text style={styles.genderStyle}>{genero}</Text>
+        <Text style={styles.nameStyle}>{name}</Text>
+        <Text style={styles.autorStyle}>{author}</Text>
+        <Text style={styles.genderStyle}>{genre}</Text>
       </View>
 
       <TouchableOpacity onPress={toggleLoanModal}>
@@ -54,8 +86,7 @@ export default function Book(props) {
           type="material-community"
           size={30}
           color={colors.getContrastColor(colors.COLOR_PRIMARY)}
-          name={isLoanConfirmed ? "hand-back-left" : "hand-back-left-outline"}
-
+          name={"hand-back-left"}
         />
       </TouchableOpacity>
 
@@ -63,8 +94,9 @@ export default function Book(props) {
         isVisible={isLoanModalVisible}
         onClose={toggleLoanModal}
         onConfirm={handleLoanConfirm}
-        nombre={nombre}
-        autor={autor}
+        name={name}
+        bookKey={bookKey}
+        author={author}
       />
     </View>
   );

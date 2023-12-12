@@ -16,11 +16,8 @@ export default function LoginForm() {
     try {
       const response = await doPut("/usuarios/login", data);
       AsyncStorage.setItem("token", response.data.token);
-      AsyncStorage.setItem("user", JSON.stringify(response.data.data));
-      AsyncStorage.setItem("email", data.email);
-      AsyncStorage.setItem("password", data.password);
-
-      if (response.data.data) {
+      AsyncStorage.setItem("user", JSON.stringify(response.data));
+      if (response.data.statusCode === 200) {
         navigation.replace("MainTabs");
       }
     } catch (error) {

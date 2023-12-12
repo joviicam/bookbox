@@ -1,61 +1,26 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { Input, Icon, Button } from "react-native-elements";
 import colors from "../utils/colors";
-import { Input, Icon } from "react-native-elements";
 import Book from "../components/common/Book";
-import { useState, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { doGet } from "../config/axios";
 
 export default function IndexScreen() {
+  const [searchText, setSearchText] = useState("");
+  const [books, setBooks] = useState([]);
   const [filteredBooks, setFilteredBooks] = useState([]);
-  let [books, setBooks] = useState([]);
+
+  const navigation = useNavigation();
 
   useEffect(() => {
-    //Arreglo de libros
-    const booksArray = [
-      {
-        key: "1",
-        nombre: "El principito",
-        autor: "Antoine de Saint-Exupéry",
-        genero: "Ficción",
-      },
-      {
-        key: "2",
-        nombre: "Harry Potter y la piedra filosofal",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "3",
-        nombre: "Harry Potter y la cámara secreta",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "4",
-        nombre: "Harry Potter y el prisionero de Azkaban",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "5",
-        nombre: "Harry Potter y el cáliz de fuego",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "6",
-        nombre: "Harry Potter y la orden del fénix",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-      {
-        key: "7",
-        nombre: "Harry Potter y el misterio del príncipe",
-        autor: "JK Rowling",
-        genero: "Ficción",
-      },
-    ];
-    setBooks(booksArray);
+    const getBooks = async () => {
+      const response = await doGet("/libros/getByQuantity/0");
+      if (response.data && response.data.data) {
+        setBooks(response.data.data);
+      }
+    };
+    getBooks();
   }, []);
 
   useEffect(() => {
@@ -65,17 +30,25 @@ export default function IndexScreen() {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = books.filter((item) => {
-        //Buscar por nombre
-        const itemData = item.nombre
-          ? item.nombre.toUpperCase()
-          : "".toUpperCase();
-        const autorData = item.autor ? item.autor.toString() : "";
-        const autor = autorData.toUpperCase();
-        const textData = text.toUpperCase();
-        return itemData.indexOf(textData) > -1 || autor.indexOf(textData) > -1;
+        const name = item.name ? item.name.toLowerCase() : "";
+        const author = item.author ? item.author.toLowerCase() : "";
+        const editorial = item.editorial ? item.editorial.toLowerCase() : "";
+        const year = item.year ? item.year.toString() : "";
+        const pages = item.pages ? item.pages.toString() : "";
+        const genre = item.genre ? item.genre.toLowerCase() : "";
+        const quantity = item.quantity ? item.quantity.toString() : "";
+        const textData = text.toLowerCase();
+        return (
+          name.includes(textData) ||
+          author.includes(textData) ||
+          editorial.includes(textData) ||
+          year.includes(textData) ||
+          pages.includes(textData) ||
+          genre.includes(textData) ||
+          quantity.includes(textData)
+        );
       });
       setFilteredBooks(newData);
-      console.log(newData);
     } else {
       setFilteredBooks(books);
     }
@@ -95,26 +68,33 @@ export default function IndexScreen() {
             />
           }
           placeholder="Buscar"
-          placeholderTextColor={colors.getContrastColor(
-            colors.COLOR_FORM_BACKGROUND
-          )}
           style={{
             color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
           }}
+          placeholderTextColor={colors.getContrastColor(
+            colors.COLOR_FORM_BACKGROUND
+          )}
           onChangeText={(text) => searchFilterFunction(text)}
         ></Input>
       </View>
       <ScrollView>
-        {filteredBooks.map((book) => {
-          return (
-            <Book
-              key={book.nombre}
-              nombre={book.nombre}
-              autor={book.autor}
-              genero={book.genero}
-            />
-          );
-        })}
+        <View>
+          {filteredBooks.map((book) => {
+            return (
+              <Book
+                key={book.id}
+                bookKey={book.id}
+                name={book.name}
+                author={book.author}
+                editorial={book.editorial}
+                year={book.year}
+                pages={book.pages}
+                genre={book.genre}
+                quantity={book.quantity}
+              />
+            );
+          })}
+        </View>
       </ScrollView>
     </View>
   );
@@ -135,9 +115,11 @@ const styles = StyleSheet.create({
     padding: 5,
     width: 300,
     height: 60,
+    color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
     borderRadius: 15,
     backgroundColor: colors.COLOR_FORM_BACKGROUND,
     marginBottom: 20,
     marginTop: 10,
+    flexDirection: "row",
   },
 });

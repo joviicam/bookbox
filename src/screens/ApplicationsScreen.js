@@ -73,10 +73,10 @@ export default function ApplicationsScreen() {
         <View>
           {filteredLoans.map((loan) => (
             <Loans
+              id={loan.id}
               book={loan.idBook.name}
               author={loan.idBook.author}
               email={loan.idUser.email}
-              days={loan.dateInit}
             />
           ))}
         </View>

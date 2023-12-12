@@ -14,14 +14,14 @@ export default function LoansScreen() {
     const getLoans = async () => {
       try {
         const response = await doGet("/prestamos/getAll");
-        const filteredLoans = response.data.data.filter((loan) => loan.status === true);
-        setLoans(filteredLoans);
+        const filteredLoansI = response.data.data.filter((loan) => loan.status === true);
+        setLoans(filteredLoansI);
       } catch (error) {
         console.error("Error al obtener préstamos:", error);
       }
     };
     getLoans();
-  }, [loans]);
+  }, []);
 
   useEffect(() => {
     setFilteredLoans(loans);
@@ -30,23 +30,19 @@ export default function LoansScreen() {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = loans.filter(function (item) {
-        const itemData = item.nombre
-          ? item.nombre.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        const email = item.email ? item.email.toUpperCase() : "".toUpperCase();
-        const autor = item.autor ? item.autor.toUpperCase() : "".toUpperCase();
-        return (
-          itemData.indexOf(textData) > -1 ||
-          email.indexOf(textData) > -1 ||
-          autor.indexOf(textData) > -1
-        );
+        const book =
+          item.idBook && item.idBook.name
+            ? item.idBook.name.toLowerCase()
+            : "";
+        const textData = text.toLowerCase();
+        return book.includes(textData);
       });
       setFilteredLoans(newData);
     } else {
       setFilteredLoans(loans);
     }
   };
+  
 
   return (
     <View style={styles.container}>
@@ -72,16 +68,17 @@ export default function LoansScreen() {
         ></Input>
       </View>
       <ScrollView>
-        <View style={styles.loansContainer}>
-          {filteredLoans.map((loan) => (
-            <LoansHistory
-              book={loan.idBook.name}
-              author={loan.idBook.author}
-              email={loan.idUser.email}
-              days={loan.dateInit}
-            />
-          ))}
-        </View>
+      <View style={styles.loansContainer}>
+        {filteredLoans.map((loan) => (
+          <LoansHistory
+            book={loan.idBook && loan.idBook.name ? loan.idBook.name : 'No Name'}
+            author={loan.idBook && loan.idBook.author ? loan.idBook.author : 'No Author'}
+            email={loan.idUser ? loan.idUser.email : 'No Email'}
+            days={loan.dateInit}
+            key={loan.id} // Add a unique key for each loan
+          />
+        ))}
+      </View>
       </ScrollView>
     </View>
   );

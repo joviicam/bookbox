@@ -3,59 +3,28 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import colors from "../utils/colors";
 import { Input, Icon, Button } from "react-native-elements";
 import UsersLoans from "../components/common/UsersLoans";
+import { doGet } from "../config/axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function BooksInLoanScreen() {
   const [filteredLoans, setFilteredLoans] = useState([]);
 
   let [loans, setLoans] = useState([]);
 
+
   useEffect(() => {
-    const loansArray = [
-      {
-        key: "1",
-        nombre: "El principito",
-        autor: "Antoine de Saint-Exupéry",
-        gender: "Novela filosófica",
-        days: "3",
-      },
-      {
-        key: "2",
-        nombre: "Harry Potter y la piedra filosofal",
-        autor: "JK Rowling",
-        gender: "Novela fantástica",
-        days: "5",
-      },
-      {
-        key: "3",
-        nombre: "Cien años de soledad",
-        autor: "Gabriel García Márquez",
-        gender: "Novela fantástica",
-        days: "10",
-      },
-      {
-        key: "4",
-        nombre: "1984",
-        autor: "George Orwell",
-        gender: "Novela distópica",
-        days: "5",
-      },
-      {
-        key: "5",
-        nombre: "Orgullo y prejuicio",
-        autor: "Jane Austen",
-        gender: "Novela romántica",
-        days: "7",
-      },
-      {
-        key: "6",
-        nombre: "El diario de Ana Frank",
-        autor: "Ana Frank",
-        gender: "Diario íntimo",
-        days: "5",
-      },
-    ];
-    setLoans(loansArray);
-  }, []);
+    const getLoans = async () => {
+      try {
+        const userString = await AsyncStorage.getItem("user");
+        const user = JSON.parse(userString);  
+        const response = await doGet(`/prestamos/getByUser/${user.idUser}`);
+        setLoans(response.data.data);
+      } catch (error) {
+        console.error("Error al obtener préstamos:", error);
+      }
+    };
+    getLoans();
+  }, [loans]);
 
   useEffect(() => {
     setFilteredLoans(loans);
@@ -112,11 +81,10 @@ export default function BooksInLoanScreen() {
         <View style={styles.loansContainer}>
           {filteredLoans.map((loan) => (
             <UsersLoans
-              key={loan.key}
-              nombre={loan.nombre}
-              autor={loan.autor}
-              gender={loan.gender}
-              days={loan.days}
+            book={loan.idBook.name}
+            author={loan.idBook.author}
+            genre={loan.idBook.genre}
+            days={loan.dateInit}
             />
           ))}
         </View>

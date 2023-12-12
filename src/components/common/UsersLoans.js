@@ -3,14 +3,14 @@ import { View, Text, StyleSheet } from "react-native";
 import colors from "../../utils/colors";
 
 export default function UsersLoans(props) {
-  const { nombre, autor, gender, days } = props;
+  const { author, genre, book, days} = props;
 
   return (
     <View style={styles.btn}>
       <View style={styles.containerTitle}>
-        <Text style={styles.nameStyle}>{nombre}</Text>
-        <Text style={styles.autorStyle}>{autor}</Text>
-        <Text style={styles.emailStyle}>{gender}</Text>
+        <Text style={styles.nameStyle}>{book}</Text>
+        <Text style={styles.autorStyle}>{author}</Text>
+        <Text style={styles.emailStyle}>{genre}</Text>
       </View>
       <View style={styles.containerTitle}>
         <Text style={styles.back}>Dias para devolverlo</Text>

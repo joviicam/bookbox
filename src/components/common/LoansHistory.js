@@ -19,6 +19,8 @@ export default function LoansHistory(props) {
 
   const daysPrested = calculateDaysPrested(days);
 
+  const fine = (daysPrested - 3) * 60; 
+
 
   return (
     <View style={styles.btn}>
@@ -27,9 +29,12 @@ export default function LoansHistory(props) {
         <Text style={styles.autorStyle}>{author}</Text>
         <Text style={styles.emailStyle}>{email}</Text>
       </View>
-      <View style={styles.containerTitle}>
-        <Text style={styles.back}>Dias para devolverlo</Text>
-        <Text style={styles.daysback}>{daysPrested}</Text>
+      <View style={{...styles.containerTitle, marginTop: 15}}>
+        <Text style={styles.back}>Dias en préstamo</Text>
+        <Text 
+          style={{ ...styles.daysback, color: daysPrested > 3 ? 'red' : 'white' }}  
+        >{daysPrested}</Text>
+        {daysPrested > 3 && <Text style={styles.multa}>Multa: ${fine}</Text>}
       </View>
     </View>
   );
@@ -45,7 +50,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.COLOR_PRIMARY,
     borderRadius: 10,
     width: 300,
-    height: 95,
+    height: 100,
   },
   containerTitle: {
     flexDirection: "column",
@@ -89,4 +94,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: colors.FONT_SIZE_NORMAL,
   },
+  multa: {
+    color: colors.getContrastColor(colors.COLOR_PRIMARY),
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: colors.FONT_SIZE_SMALL,
+  }
 });

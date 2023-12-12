@@ -2,12 +2,13 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import colors from "../../utils/colors";
+import { doPut } from "../../config/axios";
 
 import Toast from "react-native-toast-message";
 
 export default function Loans(props) {
   
-  const { author, email, book} = props;
+  const { author, email, book, id} = props;
   
   const handleLoanConfirm = () => {
     console.log("Loan confirmed");

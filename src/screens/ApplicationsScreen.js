@@ -30,17 +30,12 @@ export default function ApplicationsScreen() {
   const searchFilterFunction = (text) => {
     if (text) {
       const newData = loans.filter(function (item) {
-        const itemData = item.nombre
-          ? item.nombre.toUpperCase()
-          : "".toUpperCase();
-        const textData = text.toUpperCase();
-        const autor = item.autor ? item.autor.toUpperCase() : "".toUpperCase();
-        const email = item.email ? item.email.toUpperCase() : "".toUpperCase();
-        return (
-          itemData.indexOf(textData) > -1 ||
-          autor.indexOf(textData) > -1 ||
-          email.indexOf(textData) > -1
-        );
+        const book =
+          item.idBook && item.idBook.name
+            ? item.idBook.name.toLowerCase()
+            : "";
+        const textData = text.toLowerCase();
+        return book.includes(textData);
       });
       setFilteredLoans(newData);
     } else {
@@ -71,7 +66,7 @@ export default function ApplicationsScreen() {
       </View>
       <ScrollView>
         <View>
-          {filteredLoans.map((loan) => (
+          {filteredLoans.map((loan, key) => (
             <Loans
               id={loan.id}
               book={loan.idBook.name}

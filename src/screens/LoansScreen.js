@@ -5,23 +5,28 @@ import { Input, Icon, Button } from "react-native-elements";
 import LoansHistory from "../components/common/LoansHistory";
 import { doGet } from "../config/axios";
 
+
+
 export default function LoansScreen() {
   const [filteredLoans, setFilteredLoans] = useState([]);
 
   let [loans, setLoans] = useState([]);
 
+
+
   useEffect(() => {
     const getLoans = async () => {
       try {
         const response = await doGet("/prestamos/getAll");
-        const filteredLoansI = response.data.data.filter((loan) => loan.status === true);
-        setLoans(filteredLoansI);
+        const filteredLoans = response.data.data.filter((loan) => loan.status === true && loan.returnStatus === false);
+        setLoans(filteredLoans);
+        
       } catch (error) {
         console.error("Error al obtener préstamos:", error);
       }
     };
     getLoans();
-  }, []);
+  }, [loans]);
 
   useEffect(() => {
     setFilteredLoans(loans);
@@ -69,13 +74,13 @@ export default function LoansScreen() {
       </View>
       <ScrollView>
       <View style={styles.loansContainer}>
-        {filteredLoans.map((loan) => (
+        {filteredLoans.map((loan, key) => (
           <LoansHistory
             book={loan.idBook && loan.idBook.name ? loan.idBook.name : 'No Name'}
             author={loan.idBook && loan.idBook.author ? loan.idBook.author : 'No Author'}
             email={loan.idUser ? loan.idUser.email : 'No Email'}
             days={loan.dateInit}
-            key={loan.id} // Add a unique key for each loan
+            id={loan.id} 
           />
         ))}
       </View>

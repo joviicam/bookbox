@@ -3,28 +3,49 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import colors from "../utils/colors";
 import { Input, Icon, Button } from "react-native-elements";
 import UsersLoans from "../components/common/UsersLoans";
+import UsersLoansBack from "../components/common/UserLoansBack";
 import { doGet } from "../config/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function BooksInLoanScreen() {
-  const [filteredLoans, setFilteredLoans] = useState([]);
 
+  const [filteredLoans, setFilteredLoans] = useState([]);
   let [loans, setLoans] = useState([]);
+
+  let [loansHistory, setLoansHistory] = useState([]);
 
 
   useEffect(() => {
     const getLoans = async () => {
       try {
         const userString = await AsyncStorage.getItem("user");
-        const user = JSON.parse(userString);  
-        const response = await doGet(`/prestamos/getByUser/${user.idUser}`);
-        setLoans(response.data.data);
+        const user = JSON.parse(userString);
+        const idUser = user.data.idUser;
+        const response = await doGet(`/prestamos/getByUser/${idUser}`);
+        const filteredLoansI = response.data.data.filter((loan) => loan.status === true && loan.returnStatus === false);
+        setLoans(filteredLoansI);
       } catch (error) {
         console.error("Error al obtener préstamos:", error);
       }
     };
     getLoans();
   }, [loans]);
+
+  useEffect(() => {
+    const getLoansH = async () => {
+      try {
+        const userString = await AsyncStorage.getItem("user");
+        const user = JSON.parse(userString);
+        const idUser = user.data.idUser;
+        const response = await doGet(`/prestamos/getByUser/${idUser}`);
+        const filteredLoansI = response.data.data.filter((loan) => loan.returnStatus === true);
+        setLoansHistory(filteredLoansI);
+      } catch (error) {
+        console.error("Error al historial préstamos:", error);
+      }
+    };
+    getLoansH();
+  }, [loansHistory]);
 
   useEffect(() => {
     setFilteredLoans(loans);
@@ -78,9 +99,21 @@ export default function BooksInLoanScreen() {
         ></Input>
       </View>
       <ScrollView>
-        <View style={styles.loansContainer}>
-          {filteredLoans.map((loan) => (
+        <Text style={styles.title}>Préstamos activos</Text>
+        <View style={{...styles.loansContainer, height:200}}>
+          {filteredLoans.map((loan, key) => (
             <UsersLoans
+            book={loan.idBook.name}
+            author={loan.idBook.author}
+            genre={loan.idBook.genre}
+            days={loan.dateInit}
+            />
+          ))}
+        </View>
+        <Text style={styles.title}>Historial de Préstamos</Text>
+        <View style={styles.loansContainer}>
+          {loansHistory.map((loan, key) => (
+            <UsersLoansBack
             book={loan.idBook.name}
             author={loan.idBook.author}
             genre={loan.idBook.genre}

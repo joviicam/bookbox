@@ -1,35 +1,54 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import colors from "../../utils/colors";
-import { doPut } from "../../config/axios";
+import { doPut, doDelete } from "../../config/axios";
+
 
 import Toast from "react-native-toast-message";
+import AcceptLoanModal from "./AcceptLoanModal";
+import { get } from "react-native/Libraries/TurboModule/TurboModuleRegistry";
 
 export default function Loans(props) {
   
   const { author, email, book, id} = props;
+
   
-  const handleLoanConfirm = () => {
-    console.log("Loan confirmed");
-    Toast.show({
-      type: "success",
-      text1: "Préstamo confirmado",
-      text2: "El libro se ha prestado",
-      visibilityTime: 3000,
-      autoHide: true,
-      onHide: () => {},
-    });
+  const [isLoanModalVisible, setLoanModalVisible] = useState(false);
+  const [isLoanConfirmed, setLoanConfirmed] = useState(false);
+  
+  const toggleLoanModal = () => {
+    setLoanModalVisible(!isLoanModalVisible);
   };
 
-  const handleLoanCancel = () => {
-    console.log("Loan canceled");
+  const handleLoanConfirm = async () => {
+    const response = await doPut(`prestamos/changeStatus/${id}`);
+    console.log("Loan confirmed");
+    setLoanConfirmed(true);
+    toggleLoanModal();
     Toast.show({
       type: "success",
-      text1: "Préstamo cancelado",
-      text2: "El libro no se ha prestado",
+      text1: "Solicitud de préstamo aceptado",
+      text2:
+        "Se ha prestado el libro",
       visibilityTime: 3000,
       autoHide: true,
+      position: "bottom",
+      onHide: () => {},
+    });  
+  };
+
+  const handleLoanCancel = async() => {
+    const response = await doDelete(`prestamos/delete/${id}`);
+    console.log("Loan canceled");
+    Toast.show({
+      type: "error",
+      text1: "Solicitud de préstamo cancelado",
+      text2:
+        "Se ha cancelado la solicitud de préstamo",
+      visibilityTime: 3000,
+      autoHide: true,
+      position: "bottom",
       onHide: () => {},
     });
   };
@@ -50,7 +69,7 @@ export default function Loans(props) {
             name={"bookmark-remove"}
           />
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleLoanConfirm}>
+        <TouchableOpacity onPress={toggleLoanModal}>
           <Icon
             type="material-community"
             size={30}
@@ -59,6 +78,13 @@ export default function Loans(props) {
           />
         </TouchableOpacity>
       </View>
+      <AcceptLoanModal
+        isVisible={isLoanModalVisible}
+        onClose={toggleLoanModal}
+        onConfirm={handleLoanConfirm}
+        book={book}
+        email={email}
+      />
     </View>
   );
 }

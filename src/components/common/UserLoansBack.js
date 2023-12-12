@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import colors from "../../utils/colors";
 
-export default function UsersLoans(props) {
+export default function UsersLoansBack(props) {
   const { author, genre, book, days} = props;
 
   const calculateDaysPrested = (dateInit) => {
@@ -29,11 +29,7 @@ export default function UsersLoans(props) {
         <Text style={styles.emailStyle}>{genre}</Text>
       </View>
       <View style={{...styles.containerTitle, marginTop: 15}}>
-        <Text style={styles.back}>Dias para devolverlo</Text>
-        <Text 
-          style={{ ...styles.daysback, color: daysPrested > 3 ? 'red' : 'white' }}  
-        >{daysPrested}</Text>
-        {daysPrested > 3 && <Text style={styles.multa}>Multa: ${fine}</Text>}
+        <Text style={styles.back}>Devuelto</Text>
       </View>
     </View>
   );

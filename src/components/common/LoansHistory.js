@@ -3,18 +3,33 @@ import { View, Text, StyleSheet } from "react-native";
 import colors from "../../utils/colors";
 
 export default function LoansHistory(props) {
-  const { nombre, autor, email, days } = props;
+  const { author, email, book, days} = props;
+
+  const calculateDaysPrested = (dateInit) => {
+    const [day, month, year] = dateInit.split('/');
+  
+    const dateInitObject = new Date(year, month - 1, day);
+    const currentDate = new Date();
+    
+    const timeDifference = currentDate - dateInitObject;
+    const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  
+    return daysDifference;
+  };
+
+  const daysPrested = calculateDaysPrested(days);
+
 
   return (
     <View style={styles.btn}>
       <View style={styles.containerTitle}>
-        <Text style={styles.nameStyle}>{nombre}</Text>
-        <Text style={styles.autorStyle}>{autor}</Text>
+        <Text style={styles.nameStyle}>{book}</Text>
+        <Text style={styles.autorStyle}>{author}</Text>
         <Text style={styles.emailStyle}>{email}</Text>
       </View>
       <View style={styles.containerTitle}>
         <Text style={styles.back}>Dias para devolverlo</Text>
-        <Text style={styles.daysback}>{days}</Text>
+        <Text style={styles.daysback}>{daysPrested}</Text>
       </View>
     </View>
   );
@@ -30,7 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.COLOR_PRIMARY,
     borderRadius: 10,
     width: 300,
-    height: 80,
+    height: 95,
   },
   containerTitle: {
     flexDirection: "column",

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView } from "react-native";
 import colors from "../utils/colors";
 import { Input, Icon, Button } from "react-native-elements";
 import LoansHistory from "../components/common/LoansHistory";
+import { doGet } from "../config/axios";
 
 export default function LoansScreen() {
   const [filteredLoans, setFilteredLoans] = useState([]);
@@ -10,53 +11,17 @@ export default function LoansScreen() {
   let [loans, setLoans] = useState([]);
 
   useEffect(() => {
-    console.log("useEffect");
-    const loansArray = [
-      {
-        key: "1",
-        nombre: "El principito",
-        autor: "Antoine de Saint-Exupéry",
-        email: "puchis@gmail.com",
-        days: "5",
-      },
-      {
-        key: "2",
-        nombre: "Harry Potter y la piedra filosofal",
-        autor: "JK Rowling",
-        email: "yahir@gmail.com",
-        days: "5",
-      },
-      {
-        key: "3",
-        nombre: "Cien años de soledad",
-        autor: "Gabriel García Márquez",
-        email: "example@gmail.com",
-        days: "5",
-      },
-      {
-        key: "4",
-        nombre: "1984",
-        autor: "George Orwell",
-        email: "libro1984@gmail.com",
-        days: "5",
-      },
-      {
-        key: "5",
-        nombre: "Orgullo y prejuicio",
-        autor: "Jane Austen",
-        email: "janeausten@gmail.com",
-        days: "5",
-      },
-      {
-        key: "6",
-        nombre: "El diario de Ana Frank",
-        autor: "Ana Frank",
-        email: "mike@gmail.com",
-        days: "5",
-      },
-    ];
-    setLoans(loansArray);
-  }, []);
+    const getLoans = async () => {
+      try {
+        const response = await doGet("/prestamos/getAll");
+        const filteredLoans = response.data.data.filter((loan) => loan.status === true);
+        setLoans(filteredLoans);
+      } catch (error) {
+        console.error("Error al obtener préstamos:", error);
+      }
+    };
+    getLoans();
+  }, [loans]);
 
   useEffect(() => {
     setFilteredLoans(loans);
@@ -110,11 +75,10 @@ export default function LoansScreen() {
         <View style={styles.loansContainer}>
           {filteredLoans.map((loan) => (
             <LoansHistory
-              key={loan.key}
-              nombre={loan.nombre}
-              autor={loan.autor}
-              email={loan.email}
-              days={loan.days}
+              book={loan.idBook.name}
+              author={loan.idBook.author}
+              email={loan.idUser.email}
+              days={loan.dateInit}
             />
           ))}
         </View>

@@ -19,7 +19,7 @@ instance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log("trone en el request")
+    console.log("trone en el request");
     console.log(error);
     return Promise.reject(error);
   }
@@ -30,58 +30,59 @@ instance.interceptors.response.use(
     if (response.data.statusCode >= 200 && response.data.statusCode < 300) {
       return Promise.resolve(response);
     }
-      return Promise.reject(response);
+    return Promise.reject(response);
   },
   (error) => {
-    console.log("trone en el response")
+    console.log("trone en el response");
     console.log(error);
     if (error.response && error.response.data.statusCode === 403) {
       Toast.show({
-        type: 'error',
-        text1: 'El usuario no cuenta con los permisos para acceder a esta función',
+        type: "error",
+        text1:
+          "El usuario no cuenta con los permisos para acceder a esta función",
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     } else if (error.response && error.response.data.statusCode === 400) {
       Toast.show({
-        type: 'error',
-        text1: 'Credenciales inválidas',
+        type: "error",
+        text1: "Credenciales inválidas",
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     } else if (error.response && error.response.data.statusCode === 401) {
       Toast.show({
-        type: 'error',
-        text1: 'El usuario no esta autenticado',
+        type: "error",
+        text1: "El usuario no esta autenticado",
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     } else if (error.response && error.response.data.statusCode === 500) {
       Toast.show({
-        type: 'error',
-        text1: 'Error interno en el servidor',
+        type: "error",
+        text1: "Error interno en el servidor",
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     } else if (error.response && error.response.data.statusCode === 404) {
       Toast.show({
-        type: 'error',
-        text1: 'Recurso no encontrado',
+        type: "error",
+        text1: "Recurso no encontrado",
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     } else {
       Toast.show({
-        type: 'error',
+        type: "error",
         text1: `Error desconocido (status: ${error.response.data.statusCode})`,
         visibilityTime: 3000,
         autoHide: true,
-        position: 'bottom',
+        position: "bottom",
       });
     }
     return Promise.reject(error);

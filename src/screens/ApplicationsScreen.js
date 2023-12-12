@@ -13,12 +13,12 @@ export default function ApplicationsScreen() {
     const getLoans = async () => {
       try {
         const response = await doGet("/prestamos/getAll");
-        setLoans(response.data.data);
+        const filteredLoans = response.data.data.filter((loan) => loan.status === false);
+        setLoans(filteredLoans);
       } catch (error) {
         console.error("Error al obtener préstamos:", error);
       }
     };
-
     getLoans();
   }, [loans]);
 
@@ -76,6 +76,7 @@ export default function ApplicationsScreen() {
               book={loan.idBook.name}
               author={loan.idBook.author}
               email={loan.idUser.email}
+              days={loan.dateInit}
             />
           ))}
         </View>

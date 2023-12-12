@@ -1,50 +1,70 @@
-import { ImageBackground, StyleSheet, Text, View, Image } from "react-native";
+import {
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { Button, Input } from "react-native-elements";
 import { Picker } from "@react-native-picker/picker";
 import colors from "../../utils/colors";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { doPost } from "../../config/axios";
+import { useNavigation } from "@react-navigation/native";
+import Toast from "react-native-toast-message";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 export default function AddBook() {
-  const route = useRoute();
-  const libro = {
-    gender: "",
-    nombre: "",
-    autor: "",
-  };
-  const [gender, setGender] = useState(libro.gender ? libro.gender : "");
-  const [nombre, setNombre] = useState(libro.nombre ? libro.nombre : "");
-  const [autor, setAutor] = useState(libro.autor ? libro.autor : "");
-
-  const mapLibro = () => {
-    libro.nombre = libro.nombre ? libro.nombre : "";
-    libro.autor = libro.autor ? libro.autor : "";
-    libro.gender = libro.gender ? libro.gender : "";
-    console.log(libro);
-  };
-
-  const handlePickerChange = (value) => {
-    setGender(value);
-  };
-
-  const handleNombreChange = (value) => {
-    setNombre(value);
-  };
-
-  const handleAutorChange = (value) => {
-    setAutor(value);
-  };
-
-  const handleSubmit = () => {
-    if (libro.id) {
-      // Editar
-    } else {
-      // Crear
-    }
-  };
+  const navigation = useNavigation();
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      author: "",
+      year: "",
+      pages: "",
+      genre: "",
+      quantity: "",
+      editorial: "",
+    },
+    validationSchema: Yup.object({
+      name: Yup.string().required("El nombre es obligatorio"),
+      author: Yup.string().required("El autor es obligatorio"),
+      year: Yup.number().required("El año es obligatorio"),
+      pages: Yup.number().required("Las páginas son obligatorias"),
+      genre: Yup.string().required("El género es obligatorio"),
+      quantity: Yup.number().required("La cantidad es obligatoria"),
+      editorial: Yup.string().required("La editorial es obligatoria"),
+    }),
+    onSubmit: async (formData) => {
+      console.log(formData);
+      try {
+        const response = await doPost("/libros/create", formData);
+        console.log(response);
+        if (response.data.statusCode === 200) {
+          alert("Libro creado correctamente");
+          formik.resetForm();
+          navigation.navigate("BooksS");
+          Toast.show({
+            text1: "Libro creado correctamente",
+            type: "success",
+            visibilityTime: 2000,
+          });
+        } else {
+          alert("Error al crear el libro");
+        }
+      } catch (error) {
+        console.log(error);
+        alert("Error al crear el libro");
+      }
+    },
+  });
 
   return (
-    <View>
+    <KeyboardAwareScrollView>
       <ImageBackground
         source={require("../../../assets/images/libreria.jpg")}
         style={styles.background}
@@ -53,8 +73,10 @@ export default function AddBook() {
           <View style={styles.formContainer}>
             <Text style={styles.header}>Agregar libro</Text>
             <Input
-              value={nombre}
-              onChangeText={handleNombreChange}
+              onChangeText={(text) => {
+                formik.setFieldValue("name", text);
+              }}
+              value={formik.values.name}
               placeholder="Nombre del libro"
               placeholderTextColor={colors.getContrastColor(
                 colors.COLOR_FORM_BACKGROUND
@@ -62,10 +84,13 @@ export default function AddBook() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
+              errorMessage={formik.errors.name}
             />
             <Input
-              value={autor}
-              onChangeText={handleAutorChange}
+              onChangeText={(text) => {
+                formik.setFieldValue("author", text);
+              }}
+              value={formik.values.author}
               placeholder="Autor"
               placeholderTextColor={colors.getContrastColor(
                 colors.COLOR_FORM_BACKGROUND
@@ -73,17 +98,80 @@ export default function AddBook() {
               style={{
                 color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
               }}
+              errorMessage={formik.errors.author}
+            />
+            <Input
+              onChangeText={(text) => {
+                formik.setFieldValue("quantity", text);
+              }}
+              value={formik.values.quantity}
+              placeholder="Cantidad"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.quantity}
+            />
+            <Input
+              onChangeText={(text) => {
+                formik.setFieldValue("editorial", text);
+              }}
+              value={formik.values.editorial}
+              placeholder="Editorial"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.editorial}
+            />
+            <Input
+              onChangeText={(text) => {
+                formik.setFieldValue("year", text);
+              }}
+              value={formik.values.year}
+              placeholder="Año"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.year}
+            />
+            <Input
+              onChangeText={(text) => {
+                formik.setFieldValue("pages", text);
+              }}
+              value={formik.values.pages}
+              placeholder="Páginas"
+              keyboardType="numeric"
+              placeholderTextColor={colors.getContrastColor(
+                colors.COLOR_FORM_BACKGROUND
+              )}
+              style={{
+                color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
+              }}
+              errorMessage={formik.errors.pages}
             />
             <Picker
               style={styles.picker}
-              gender={gender}
-              onValueChange={handlePickerChange}
-              mode="dropdown"
+              selectedValue={formik.values.genre}
+              onValueChange={(value) => {
+                formik.setFieldValue("genre", value);
+              }}
+              mode="dialog"
+              errorMessage={formik.errors.genre}
             >
               <Picker.Item
                 label="Selecciona un género"
                 value=""
-                disabled
+                disabled={true}
                 style={{ backgroundColor: colors.COLOR_FORM_BACKGROUND }}
                 color={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
               />
@@ -118,14 +206,15 @@ export default function AddBook() {
                 titleStyle={{
                   color: colors.getContrastColor(colors.COLOR_PRIMARY),
                 }}
+                type="submit"
                 buttonStyle={styles.saveButton}
-                onPress={() => mapLibro()}
+                onPress={formik.handleSubmit}
               />
             </View>
           </View>
         </View>
       </ImageBackground>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 
@@ -133,7 +222,7 @@ const styles = StyleSheet.create({
   containerLogo: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 100,
+    marginTop: 10,
   },
   background: {
     resizeMode: "cover",
@@ -150,7 +239,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     alignSelf: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
   logoTitle: {
     fontSize: colors.FONT_SIZE_LARGE,
@@ -172,11 +261,12 @@ const styles = StyleSheet.create({
   },
   picker: {
     width: "100%",
-    marginBottom: 20,
+    height: 50, // Adjust the height according to your preference
+    marginBottom: 120, // Add marginBottom to give space below the Picker
     color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND),
   },
+
   saveButton: {
-    marginTop: 20,
     width: "80%",
     height: 60,
     borderRadius: 30,

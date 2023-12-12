@@ -8,8 +8,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { doPut } from "../../config/axios";
-import Toast from 'react-native-toast-message';
-
+import Toast from "react-native-toast-message";
 export default function LoginForm() {
   const navigation = useNavigation();
 
@@ -26,9 +25,9 @@ export default function LoginForm() {
         navigation.replace("MainTabs");
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -42,7 +41,7 @@ export default function LoginForm() {
       password: Yup.string().required("La contraseña es obligatoria"),
     }),
     onSubmit: async (formData) => {
-      await login(formData)
+      await login(formData);
     },
   });
   return (
@@ -53,7 +52,9 @@ export default function LoginForm() {
       <Text style={styles.textTitle}>Bienvenido a BookBox</Text>
       <Input
         placeholder="Correo electrónico"
-        placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+        placeholderTextColor={colors.getContrastColor(
+          colors.COLOR_FORM_BACKGROUND
+        )}
         style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
         containerStyle={{ marginBottom: 10 }}
         onChangeText={(text) => {
@@ -63,7 +64,9 @@ export default function LoginForm() {
       ></Input>
       <Input
         placeholder="Contraseña"
-        placeholderTextColor={colors.getContrastColor(colors.COLOR_FORM_BACKGROUND)}
+        placeholderTextColor={colors.getContrastColor(
+          colors.COLOR_FORM_BACKGROUND
+        )}
         style={{ color: colors.getContrastColor(colors.COLOR_FORM_BACKGROUND) }}
         containerStyle={{ marginBottom: 30 }}
         onChangeText={(text) => {

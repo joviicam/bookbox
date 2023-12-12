@@ -5,27 +5,33 @@ import colors from "../../utils/colors";
 import { useNavigation } from "@react-navigation/native";
 
 export default function BookForAdmin(props) {
-  const { bookKey, nombre, autor, genero } = props;
+  const { bookKey, name, author, editorial, pages, year, genre, quantity } =
+    props;
   const navigation = useNavigation();
   const libro = {
     id: bookKey,
-    nombre: nombre,
-    autor: autor,
-    genero: genero,
+    name: name,
+    author: author,
+    editorial: editorial,
+    pages: pages,
+    year: year,
+    genre: genre,
+    quantity: quantity,
   };
 
   const goToBookDetails = () => {
     navigation.navigate("BookDetailS", {
       libro: libro,
     });
+    console.log(libro);
   };
   return (
     <TouchableOpacity onPress={goToBookDetails}>
       <View style={styles.btn}>
         <View style={styles.containerTitle}>
-          <Text style={styles.nameStyle}>{nombre}</Text>
-          <Text style={styles.autorStyle}>{autor}</Text>
-          <Text style={styles.genderStyle}>{genero}</Text>
+          <Text style={styles.nameStyle}>{name}</Text>
+          <Text style={styles.authorStyle}>{author}</Text>
+          <Text style={styles.genderStyle}>{genre}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     color: colors.getContrastColor(colors.COLOR_PRIMARY),
     marginBottom: 5,
   },
-  autorStyle: {
+  authorStyle: {
     fontSize: colors.FONT_SIZE_SMALL,
     color: colors.getContrastColor(colors.COLOR_PRIMARY),
     marginBottom: 5,

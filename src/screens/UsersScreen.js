@@ -15,9 +15,9 @@ export default function UsersScreen() {
 
   useEffect(() => {
     const getUsers = async () => {
-    const response = await doGet("/usuarios/getAll");
-    setUsers(response.data.data);
-    }
+      const response = await doGet("/usuarios/getAll");
+      setUsers(response.data.data);
+    };
     getUsers();
   }, [users]);
 
